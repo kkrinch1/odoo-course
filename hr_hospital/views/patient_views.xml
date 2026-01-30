@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_hospital_patient_list" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.list</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="doctor_id"/>
+                <field name="birth_date"/>
+                <field name="phone"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_hospital_patient_form" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.form</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Patient name"/>
+                        </h1>
+                    </div>
+
+                    <separator string="Контакти та лікар"/>
+
+                    <group col="2">
+                        <group>
+                            <field name="doctor_id"/>
+                            <field name="birth_date"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Медицина">
+                            <separator string="Хвороби"/>
+                            <group col="1">
+                                <field name="disease_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

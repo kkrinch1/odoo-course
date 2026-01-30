@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="doctor_1" model="hr.hospital.doctor">
+        <field name="name">Dr. Alice Green</field>
+    </record>
+
+    <record id="doctor_2" model="hr.hospital.doctor">
+        <field name="name">Dr. Bob White</field>
+        <field name="supervising_doctor_id" ref="doctor_1"/>
+    </record>
+
+    <record id="doctor_3" model="hr.hospital.doctor">
+        <field name="name">Dr. Carol Black</field>
+        <field name="supervising_doctor_id" ref="doctor_1"/>
+    </record>
+</odoo>

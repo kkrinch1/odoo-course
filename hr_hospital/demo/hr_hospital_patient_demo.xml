@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="patient_1" model="hr.hospital.patient">
+        <field name="name">John Smith</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_2"/>
+        <field name="disease_ids" eval="[(4, ref('hr_hospital.disease_flu'))]"/>
+    </record>
+
+    <record id="patient_2" model="hr.hospital.patient">
+        <field name="name">Emma Johnson</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_3"/>
+        <field name="disease_ids" eval="[(4, ref('hr_hospital.disease_migraine'))]"/>
+    </record>
+
+    <record id="patient_3" model="hr.hospital.patient">
+        <field name="name">Liam Brown</field>
+        <field name="doctor_id" ref="hr_hospital.doctor_2"/>
+        <field name="disease_ids" eval="[(4, ref('hr_hospital.disease_hypertension'))]"/>
+    </record>
+</odoo>
