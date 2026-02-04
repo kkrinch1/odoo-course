@@ -1,0 +1,62 @@
+<odoo>
+    <!-- LIST (в Odoo 19 это <list>, не <tree>) -->
+    <record id="osl_library_book_view_list" model="ir.ui.view">
+        <field name="name">osl.library.book.list</field>
+        <field name="model">osl.library.book</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="res_partner_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="osl_library_book_view_form" model="ir.ui.view">
+        <field name="name">osl.library.book.form</field>
+        <field name="model">osl.library.book</field>
+        <field name="arch" type="xml">
+            <form string="Book">
+                <header>
+                    <!-- кнопка открытия визарда -->
+                    <button name="%(action_osl_add_reader_wizard)d"
+                            type="action"
+                            string="Add Readers"
+                             class="btn-primary"/>
+
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="res_partner_id"/>
+                        <field name="active"/>
+                    </group>
+
+                    <group string="Readers">
+                        <field name="reader_ids" widget="many2many_tags"/>
+                    </group>
+
+                    <group string="Note">
+                        <field name="note"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="osl_library_book_action" model="ir.actions.act_window">
+        <field name="name">Books</field>
+        <field name="res_model">osl.library.book</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- MENU -->
+    <menuitem id="osl_library_menu_root" name="OSL Library"/>
+    <menuitem id="osl_library_menu_books"
+              name="Books"
+              parent="osl_library_menu_root"
+              action="osl_library_book_action"/>
+</odoo>
