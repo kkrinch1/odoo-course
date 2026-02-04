@@ -1,3 +1,0 @@
-id,name,res_partner_id/id,active
-osl_book_demo_1,The Hobbit,osl_library.osl_partner_demo_1,True
-osl_book_demo_2,A Game of Thrones,osl_library.osl_partner_demo_2,True
