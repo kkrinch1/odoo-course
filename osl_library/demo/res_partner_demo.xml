@@ -1,0 +1,25 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="osl_partner_demo_1" model="res.partner">
+            <field name="name">Author One</field>
+            <field name="autopost_bills">no</field>
+        </record>
+
+        <record id="osl_partner_demo_2" model="res.partner">
+            <field name="name">Author Two</field>
+            <field name="autopost_bills">no</field>
+        </record>
+
+        <record id="osl_partner_demo_3" model="res.partner">
+            <field name="name">Reader One</field>
+            <field name="autopost_bills">no</field>
+        </record>
+
+        <record id="osl_partner_demo_4" model="res.partner">
+            <field name="name">Reader Two</field>
+            <field name="autopost_bills">no</field>
+        </record>
+
+    </data>
+</odoo>
