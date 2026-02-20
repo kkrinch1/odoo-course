@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="diag_01" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_05"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">hard</field>
+      <field name="description">Acute pain, suspected inflammation.</field>
+      <field name="treatment"><![CDATA[
+        <p>Prescribed anti-inflammatory therapy. Re-check in 48 hours.</p>
+      ]]></field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_05"/>
+      <field name="approved_date">2026-02-16 16:10:00</field>
+    </record>
+
+    <record id="diag_02" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_05"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">medium</field>
+      <field name="description">Secondary condition, needs monitoring.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_05"/>
+      <field name="approved_date">2026-02-16 16:12:00</field>
+    </record>
+
+    <record id="diag_03" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_05"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">light</field>
+      <field name="description">Mild symptoms, supportive care.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_05"/>
+      <field name="approved_date">2026-02-16 16:14:00</field>
+    </record>
+
+    <record id="diag_04" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_12"/>
+      <field name="disease_id" ref="disease_asthma"/>
+      <field name="severity">medium</field>
+      <field name="description">Confirmed diagnosis after examination.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_04"/>
+      <field name="approved_date">2026-02-18 11:20:00</field>
+    </record>
+
+    <record id="diag_05" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_12"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">light</field>
+      <field name="description">Mild complications.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_04"/>
+      <field name="approved_date">2026-02-18 11:22:00</field>
+    </record>
+
+    <record id="diag_06" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_12"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">hard</field>
+      <field name="description">Requires additional tests.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_04"/>
+      <field name="approved_date">2026-02-18 11:25:00</field>
+    </record>
+
+    <record id="diag_07" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_15"/>
+      <field name="disease_id" ref="disease_tuberculosis"/>
+      <field name="severity">medium</field>
+      <field name="description">Intern preliminary diagnosis.</field>
+      <field name="approved">False</field>
+    </record>
+
+    <record id="diag_08" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_15"/>
+      <field name="disease_id" ref="disease_asthma"/>
+      <field name="severity">light</field>
+      <field name="description">Intern note: mild symptoms.</field>
+      <field name="approved">False</field>
+    </record>
+
+    <record id="diag_09" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_15"/>
+      <field name="disease_id" ref="disease_influenza"/>
+      <field name="severity">hard</field>
+      <field name="description">Mentor confirmed the main diagnosis.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_01"/>
+      <field name="approved_date">2026-02-18 15:55:00</field>
+    </record>
+
+    <record id="diag_10" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_19"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">medium</field>
+      <field name="description">Stable condition, outpatient treatment.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_03"/>
+      <field name="approved_date">2026-02-19 14:55:00</field>
+    </record>
+
+    <record id="diag_11" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_19"/>
+      <field name="disease_id" ref="disease_influenza"/>
+      <field name="severity">light</field>
+      <field name="description">Minor symptoms.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_03"/>
+      <field name="approved_date">2026-02-19 14:57:00</field>
+    </record>
+
+    <record id="diag_12" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_22"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">medium</field>
+      <field name="description">Needs follow-up observation.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_06"/>
+      <field name="approved_date">2026-02-20 11:20:00</field>
+    </record>
+
+    <record id="diag_13" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_22"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">hard</field>
+      <field name="description">Severe symptoms, additional diagnostics required.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_06"/>
+      <field name="approved_date">2026-02-20 11:24:00</field>
+    </record>
+
+    <record id="diag_14" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_22"/>
+      <field name="disease_id" ref="disease_cat_infectious"/>
+      <field name="severity">light</field>
+      <field name="description">Accompanying mild condition.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_06"/>
+      <field name="approved_date">2026-02-20 11:26:00</field>
+    </record>
+
+    <record id="diag_15" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_24"/>
+      <field name="disease_id" ref="disease_influenza"/>
+      <field name="severity">medium</field>
+      <field name="description">Intern preliminary diagnosis (not approved yet).</field>
+      <field name="approved">False</field>
+    </record>
+
+    <record id="diag_16" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_24"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">hard</field>
+      <field name="description">Mentor confirmed diagnosis for intern visit.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_02"/>
+      <field name="approved_date">2026-02-20 15:05:00</field>
+    </record>
+
+    <!-- Добиваем до 20 (добавь ещё 4 записи на любые done-визиты) -->
+    <record id="diag_17" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_02"/>
+      <field name="disease_id" ref="disease_covid19"/>
+      <field name="severity">medium</field>
+      <field name="description">Confirmed diagnosis.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_02"/>
+      <field name="approved_date">2026-02-16 11:05:00</field>
+    </record>
+
+    <record id="diag_18" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_02"/>
+      <field name="disease_id" ref="disease_cat_infectious"/>
+      <field name="severity">light</field>
+      <field name="description">Minor symptoms.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_02"/>
+      <field name="approved_date">2026-02-16 11:08:00</field>
+    </record>
+
+    <record id="diag_19" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_09"/>
+      <field name="disease_id" ref="disease_cat_viral"/>
+      <field name="severity">hard</field>
+      <field name="description">Requires strict monitoring.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_01"/>
+      <field name="approved_date">2026-02-17 14:50:00</field>
+    </record>
+
+    <record id="diag_20" model="hr.hospital.medical.diagnosis">
+      <field name="visit_id" ref="visit_09"/>
+      <field name="disease_id" ref="disease_cat_viral"/>
+      <field name="severity">medium</field>
+      <field name="description">Additional condition.</field>
+      <field name="approved">True</field>
+      <field name="approved_by_doctor_id" ref="doctor_01"/>
+      <field name="approved_date">2026-02-17 14:52:00</field>
+    </record>
+
+  </data>
+</odoo>

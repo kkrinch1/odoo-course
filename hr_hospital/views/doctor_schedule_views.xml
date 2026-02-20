@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- LIST -->
+    <record id="view_hr_hospital_doctor_schedule_list" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.schedule.list</field>
+        <field name="model">hr.hospital.doctor.schedule</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="doctor_id"/>
+                <field name="date"/>
+                <field name="day_of_week"/>
+                <field name="type"/>
+                <field name="start_time" widget="float_time"/>
+                <field name="end_time" widget="float_time"/>
+                <field name="notes"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="view_hr_hospital_doctor_schedule_form" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.schedule.form</field>
+        <field name="model">hr.hospital.doctor.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Doctor Schedule">
+                <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="doctor_id" domain="[('speciality_id','!=',False)]"/>
+                            <field name="type"/>
+                            <field name="notes"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="day_of_week"/>
+                            <field name="start_time" widget="float_time"/>
+                            <field name="end_time" widget="float_time"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_hr_hospital_doctor_schedule" model="ir.actions.act_window">
+        <field name="name">Doctor Schedules</field>
+        <field name="res_model">hr.hospital.doctor.schedule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,37 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <menuitem id="hr_hospital_menu_root" name="Hospital" sequence="10"/>
+    <data>
 
-    <record id="action_hr_hospital_patient" model="ir.actions.act_window">
-        <field name="name">Пацієнти</field>
-        <field name="res_model">hr.hospital.patient</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <!-- Root menu -->
+        <menuitem id="hr_hospital_root_menu" name="Hospital" sequence="10"/>
 
-    <record id="action_hr_hospital_doctor" model="ir.actions.act_window">
-        <field name="name">Лікарі</field>
-        <field name="res_model">hr.hospital.doctor</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <!-- Main menus -->
+        <menuitem id="hr_hospital_menu_patients"
+                  name="Patients"
+                  parent="hr_hospital_root_menu"
+                  action="action_hr_hospital_patient"
+                  sequence="10"/>
 
-    <record id="action_hr_hospital_visit" model="ir.actions.act_window">
-        <field name="name">Візити</field>
-        <field name="res_model">hr.hospital.visit</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <menuitem id="hr_hospital_menu_contact_persons"
+                  name="Contact Persons"
+                  parent="hr_hospital_root_menu"
+                  action="action_hr_hospital_contact_person"
+                  sequence="20"/>
 
-    <record id="action_hr_hospital_disease" model="ir.actions.act_window">
-        <field name="name">Хвороби</field>
-        <field name="res_model">hr.hospital.disease</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <menuitem id="hr_hospital_menu_doctors"
+                  name="Doctors"
+                  parent="hr_hospital_root_menu"
+                  action="action_hr_hospital_doctor"
+                  sequence="30"/>
 
-    <menuitem id="hr_hospital_menu_patients" name="Пацієнти" parent="hr_hospital_menu_root"
-              action="action_hr_hospital_patient" sequence="10"/>
-    <menuitem id="hr_hospital_menu_doctors" name="Лікарі" parent="hr_hospital_menu_root"
-              action="action_hr_hospital_doctor" sequence="20"/>
-    <menuitem id="hr_hospital_menu_visits" name="Візити" parent="hr_hospital_menu_root"
-              action="action_hr_hospital_visit" sequence="30"/>
-    <menuitem id="hr_hospital_menu_diseases" name="Хвороби" parent="hr_hospital_menu_root"
-              action="action_hr_hospital_disease" sequence="40"/>
+        <menuitem id="hr_hospital_menu_visits"
+                  name="Visits"
+                  parent="hr_hospital_root_menu"
+                  action="action_hr_hospital_patient_visit"
+                  sequence="40"/>
+
+        <menuitem id="hr_hospital_menu_diagnoses"
+                  name="Diagnoses"
+                  parent="hr_hospital_root_menu"
+                  action="action_hr_hospital_medical_diagnosis"
+                  sequence="50"/>
+
+        <menuitem id="hr_hospital_menu_reports"
+                  name="Reports"
+                  parent="hr_hospital_root_menu"
+                  sequence="80"/>
+
+        <menuitem id="hr_hospital_menu_report_diseases"
+                  name="Disease Report"
+                  parent="hr_hospital_menu_reports"
+                  action="action_disease_report_wizard"
+                  sequence="10"/>
+
+        <!-- ✅ ВАЖНО: action теперь SERVER action -->
+        <menuitem id="hr_hospital_menu_report_visits_pivot_month"
+                  name="Visits Pivot (This month)"
+                  parent="hr_hospital_menu_reports"
+                  action="action_hr_hospital_patient_visit_pivot_month_srv"
+                  sequence="20"/>
+
+        <!-- Configuration -->
+        <menuitem id="hr_hospital_menu_configuration"
+                  name="Settings"
+                  parent="hr_hospital_root_menu"
+                  sequence="90"/>
+
+        <menuitem id="hr_hospital_menu_diseases"
+                  name="Diseases"
+                  parent="hr_hospital_menu_configuration"
+                  action="action_hr_hospital_disease"
+                  sequence="10"/>
+
+        <menuitem id="hr_hospital_menu_doctor_specialities"
+                  name="Specialties"
+                  parent="hr_hospital_menu_configuration"
+                  action="action_doctor_speciality"
+                  sequence="20"/>
+
+        <menuitem id="hr_hospital_menu_doctor_schedules"
+                  name="Doctor Schedules"
+                  parent="hr_hospital_menu_configuration"
+                  action="action_hr_hospital_doctor_schedule"
+                  sequence="30"/>
+
+        <menuitem id="hr_hospital_menu_generate_schedule"
+                  name="Fill Schedule (Wizard)"
+                  parent="hr_hospital_menu_doctor_schedules"
+                  action="action_doctor_schedule_wizard"
+                  sequence="10"/>
+
+        <menuitem id="hr_hospital_menu_doctor_history"
+                  name="Doctor History"
+                  parent="hr_hospital_menu_configuration"
+                  action="action_patient_doctor_history"
+                  sequence="40"/>
+
+    </data>
 </odoo>

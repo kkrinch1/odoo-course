@@ -1,55 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+    <!-- LIST -->
     <record id="view_hr_hospital_patient_list" model="ir.ui.view">
         <field name="name">hr.hospital.patient.list</field>
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
-                <field name="doctor_id"/>
+                <field name="full_name"/>
                 <field name="birth_date"/>
+                <field name="age"/>
+                <field name="sex"/>
                 <field name="phone"/>
-                <field name="active"/>
+                <field name="email"/>
+                <field name="allergies" optional="hide"/>
+                <field name="personal_doctor_id"/>
+                <field name="blood_group"/>
             </list>
         </field>
     </record>
 
+    <!-- SEARCH -->
+    <record id="view_hr_hospital_patient_search" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.search</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="full_name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="personal_doctor_id"/>
+                <field name="citizenship_country_id"/>
+                <field name="lang_id"/>
+
+                <filter string="With allergies" name="has_allergies" domain="[('allergies','!=',False)]"/>
+                <group>
+                    <filter string="Country" name="group_country" context="{'group_by':'citizenship_country_id'}"/>
+                    <filter string="Doctor" name="group_doctor" context="{'group_by':'personal_doctor_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- FORM -->
     <record id="view_hr_hospital_patient_form" model="ir.ui.view">
         <field name="name">hr.hospital.patient.form</field>
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="%(action_patient_card_export_wizard)d" type="action" string="Export Card" class="btn-primary"/>
+                </header>
                 <sheet>
+
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Patient name"/>
+                            <field name="image_1920" widget="image" class="oe_avatar"/>
+                            <field name="last_name" placeholder="Last Name"/>
+                            <field name="first_name" placeholder="First Name"/>
+                            <field name="middle_name" placeholder="Middle Name"/>
                         </h1>
                     </div>
 
-                    <separator string="Контакти та лікар"/>
-
                     <group col="2">
-                        <group>
-                            <field name="doctor_id"/>
+                        <group string="Main Information">
                             <field name="birth_date"/>
+                            <field name="age" readonly="1"/>
+                            <field name="sex"/>
+                            <field name="passport_data"/>
+                            <field name="blood_group"/>
+                            <field name="allergies" placeholder="Write allergies here..."/>
                         </group>
-                        <group>
+
+                        <group string="Contacts">
                             <field name="phone"/>
                             <field name="email"/>
-                            <field name="active"/>
+                            <field name="citizenship_country_id"/>
+                            <field name="lang_id"/>
+                            <field name="contact_person_id"/>
+                            <field name="personal_doctor_id"/>
                         </group>
                     </group>
 
+                    <group string="Insurance" col="2">
+                        <field name="insurance_company_id"/>
+                        <field name="policy_number"/>
+                    </group>
+
                     <notebook>
-                        <page string="Медицина">
-                            <separator string="Хвороби"/>
-                            <group col="1">
-                                <field name="disease_ids" widget="many2many_tags"/>
-                            </group>
+                        <page string="Primary Doctor History">
+                            <field name="doctor_history_ids" context="{'default_patient_id': id}">
+                                <list editable="bottom">
+                                    <field name="doctor_id"/>
+                                    <field name="assign_date"/>
+                                    <field name="change_date"/>
+                                    <field name="active"/>
+                                    <field name="change_reason"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
+
                 </sheet>
             </form>
         </field>
     </record>
+
+    <!-- ACTION -->
+    <record id="action_hr_hospital_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">hr.hospital.patient</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hr_hospital_patient_search"/>
+    </record>
+
 </odoo>

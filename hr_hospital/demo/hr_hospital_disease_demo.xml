@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Level 1 -->
+        <record id="disease_cat_infectious" model="hr.hospital.disease">
+            <field name="name">Infectious diseases</field>
+            <field name="danger_level">medium</field>
+            <field name="contagious">0</field>
+            <field name="symptoms">General category for infectious diseases.</field>
+        </record>
+
+        <!-- Level 2 -->
+        <record id="disease_cat_viral" model="hr.hospital.disease">
+            <field name="name">Viral infections</field>
+            <field name="parent_id" ref="disease_cat_infectious"/>
+            <field name="danger_level">medium</field>
+            <field name="contagious">1</field>
+            <field name="symptoms">General category for viral infections.</field>
+        </record>
+
+        <!-- Level 3 (leaf) -->
+        <record id="disease_influenza" model="hr.hospital.disease">
+            <field name="name">Influenza</field>
+            <field name="parent_id" ref="disease_cat_viral"/>
+            <field name="icd10_code">J10</field>
+            <field name="danger_level">medium</field>
+            <field name="contagious">1</field>
+            <field name="symptoms">Fever, cough, sore throat, muscle aches.</field>
+            <field name="region_country_ids" eval="[(6, 0, [ref('base.us'), ref('base.de'), ref('base.it')])]"/>
+        </record>
+
+        <record id="disease_covid19" model="hr.hospital.disease">
+            <field name="name">COVID-19</field>
+            <field name="parent_id" ref="disease_cat_viral"/>
+            <field name="icd10_code">U07.1</field>
+            <field name="danger_level">high</field>
+            <field name="contagious">1</field>
+            <field name="symptoms">Fever, cough, fatigue, shortness of breath.</field>
+            <field name="region_country_ids" eval="[(6, 0, [ref('base.us'), ref('base.it'), ref('base.es')])]"/>
+        </record>
+
+        <!-- Level 2 -->
+        <record id="disease_cat_bacterial" model="hr.hospital.disease">
+            <field name="name">Bacterial infections</field>
+            <field name="parent_id" ref="disease_cat_infectious"/>
+            <field name="danger_level">medium</field>
+            <field name="contagious">1</field>
+            <field name="symptoms">General category for bacterial infections.</field>
+        </record>
+
+        <!-- Leaf -->
+        <record id="disease_tuberculosis" model="hr.hospital.disease">
+            <field name="name">Tuberculosis</field>
+            <field name="parent_id" ref="disease_cat_bacterial"/>
+            <field name="icd10_code">A15</field>
+            <field name="danger_level">high</field>
+            <field name="contagious">1</field>
+            <field name="symptoms">Persistent cough, weight loss, night sweats.</field>
+            <field name="region_country_ids" eval="[(6, 0, [ref('base.de'), ref('base.it'), ref('base.it')])]"/>
+        </record>
+
+        <!-- Level 1 -->
+        <record id="disease_cat_respiratory" model="hr.hospital.disease">
+            <field name="name">Respiratory diseases</field>
+            <field name="danger_level">low</field>
+            <field name="contagious">0</field>
+            <field name="symptoms">General category for respiratory diseases.</field>
+        </record>
+
+        <!-- Leaf -->
+        <record id="disease_asthma" model="hr.hospital.disease">
+            <field name="name">Asthma</field>
+            <field name="parent_id" ref="disease_cat_respiratory"/>
+            <field name="icd10_code">J45</field>
+            <field name="danger_level">medium</field>
+            <field name="contagious">0</field>
+            <field name="symptoms">Wheezing, chest tightness, shortness of breath.</field>
+            <field name="region_country_ids" eval="[(6, 0, [ref('base.us'), ref('base.it')])]"/>
+        </record>
+
+        <!-- Level 1 -->
+        <record id="disease_cat_cardiovascular" model="hr.hospital.disease">
+            <field name="name">Cardiovascular diseases</field>
+            <field name="danger_level">medium</field>
+            <field name="contagious">0</field>
+            <field name="symptoms">General category for cardiovascular diseases.</field>
+        </record>
+
+        <!-- Leaf -->
+        <record id="disease_hypertension" model="hr.hospital.disease">
+            <field name="name">Hypertension</field>
+            <field name="parent_id" ref="disease_cat_cardiovascular"/>
+            <field name="icd10_code">I10</field>
+            <field name="danger_level">medium</field>
+            <field name="contagious">0</field>
+            <field name="symptoms">Often asymptomatic; possible headaches, dizziness.</field>
+            <field name="region_country_ids" eval="[(6, 0, [ref('base.de'), ref('base.es')])]"/>
+        </record>
+
+        <!-- Level 1 -->
+        <record id="disease_cat_neurology" model="hr.hospital.disease">
+            <field name="name">Neurological disorders</field>
+            <field name="danger_level">low</field>
+            <field name="contagious">0</field>
+            <field name="symptoms">General category for neurological disorders.</field>
+        </record>
+
+        <!-- Leaf -->
+        <record id="disease_migraine" model="hr.hospital.disease">
+            <field name="name">Migraine</field>
+            <field name="parent_id" ref="disease_cat_neurology"/>
+            <field name="icd10_code">G43</field>
+            <field name="danger_level">low</field>
+            <field name="contagious">0</field>
+            <field name="symptoms">Throbbing headache, nausea, sensitivity to light.</field>
+            <field name="region_country_ids" eval="[(6, 0, [ref('base.us'), ref('base.it')])]"/>
+        </record>
+
+    </data>
+</odoo>
