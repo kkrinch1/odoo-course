@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Primary doctor history -->
+    <record id="hist_patient_01_1" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_01"/>
+        <field name="doctor_id" ref="doctor_02"/>
+        <field name="assign_date">2026-02-01</field>
+        <field name="change_reason">Initial assignment</field>
+    </record>
+
+    <record id="hist_patient_01_2" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_01"/>
+        <field name="doctor_id" ref="doctor_03"/>
+        <field name="assign_date">2026-02-15</field>
+        <field name="change_reason">Routine re-assignment</field>
+    </record>
+
+    <record id="hist_patient_02_1" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_02"/>
+        <field name="doctor_id" ref="doctor_03"/>
+        <field name="assign_date">2026-02-01</field>
+        <field name="change_reason">Initial assignment</field>
+    </record>
+
+    <record id="hist_patient_02_2" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_02"/>
+        <field name="doctor_id" ref="doctor_04"/>
+        <field name="assign_date">2026-02-15</field>
+        <field name="change_reason">Routine re-assignment</field>
+    </record>
+
+    <record id="hist_patient_03_1" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_03"/>
+        <field name="doctor_id" ref="doctor_04"/>
+        <field name="assign_date">2026-02-01</field>
+        <field name="change_reason">Initial assignment</field>
+    </record>
+
+    <record id="hist_patient_03_2" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_03"/>
+        <field name="doctor_id" ref="doctor_05"/>
+        <field name="assign_date">2026-02-15</field>
+        <field name="change_reason">Routine re-assignment</field>
+    </record>
+
+    <record id="hist_patient_04_1" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_04"/>
+        <field name="doctor_id" ref="doctor_05"/>
+        <field name="assign_date">2026-02-01</field>
+        <field name="change_reason">Initial assignment</field>
+    </record>
+
+    <record id="hist_patient_04_2" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_04"/>
+        <field name="doctor_id" ref="doctor_06"/>
+        <field name="assign_date">2026-02-15</field>
+        <field name="change_reason">Routine re-assignment</field>
+    </record>
+
+    <record id="hist_patient_05_1" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_05"/>
+        <field name="doctor_id" ref="doctor_06"/>
+        <field name="assign_date">2026-02-01</field>
+        <field name="change_reason">Initial assignment</field>
+    </record>
+
+    <record id="hist_patient_05_2" model="patient.doctor.history">
+        <field name="patient_id" ref="patient_05"/>
+        <field name="doctor_id" ref="doctor_07_intern"/>
+        <field name="assign_date">2026-02-15</field>
+        <field name="change_reason">Routine re-assignment</field>
+    </record>
+
+</odoo>

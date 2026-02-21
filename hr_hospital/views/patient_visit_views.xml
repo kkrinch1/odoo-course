@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- LIST -->
+    <record id="view_hr_hospital_patient_visit_list" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.visit.list</field>
+        <field name="model">hr.hospital.patient.visit</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="planned_date"/>
+                <field name="action_date"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="speciality_id"/>
+                <field name="visit_type"/>
+                <field name="diagnosis_count"/>
+                <field name="cost"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- SEARCH -->
+    <record id="view_hr_hospital_patient_visit_search" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.visit.search</field>
+        <field name="model">hr.hospital.patient.visit</field>
+        <field name="arch" type="xml">
+            <search string="Visits">
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="planned_date"/>
+                <field name="state"/>
+
+                <filter string="Planned" name="planned" domain="[('state','=','planned')]"/>
+                <filter string="Done" name="done" domain="[('state','=','done')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state','=','cancelled')]"/>
+                <filter string="No-show" name="no_show" domain="[('state','=','no_show')]"/>
+
+                <group>
+                    <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                    <filter string="Doctor" name="group_doctor" context="{'group_by':'doctor_id'}"/>
+                    <filter string="Month" name="group_month" context="{'group_by':'planned_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="view_hr_hospital_patient_visit_form" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.visit.form</field>
+        <field name="model">hr.hospital.patient.visit</field>
+        <field name="arch" type="xml">
+            <form string="Visit">
+                <header>
+                    <button name="action_set_done" type="object" string="Mark Done"
+                            class="oe_highlight"
+                            invisible="state != 'planned'"/>
+
+                    <button name="action_set_no_show" type="object" string="No-show"
+                            class="btn-secondary"
+                            invisible="state != 'planned'"/>
+
+                    <button name="%(hr_hospital.action_reschedule_visit_wizard)d" type="action" string="Reschedule"
+                            class="btn-primary"
+                            invisible="state != 'planned'"/>
+
+                    <button name="action_set_cancelled" type="object" string="Cancel"
+                            class="btn-danger"
+                            invisible="state in ('cancelled','done')"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="planned,done,no_show,cancelled"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <!-- важно: пусть computed field присутствует в форме (можно скрытым) -->
+                    <field name="available_doctor_ids" invisible="1"/>
+
+                    <group col="2">
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="speciality_id"/>
+
+                            <!-- ✅ домен по доступным врачам -->
+                            <field name="doctor_id" domain="[('id','in', available_doctor_ids)]"/>
+
+                            <field name="visit_type"/>
+                            <field name="planned_date"/>
+                            <field name="action_date" readonly="state != 'done'"/>
+                        </group>
+
+                        <group string="Cost">
+                            <field name="currency_id"/>
+                            <field name="cost"/>
+                        </group>
+                    </group>
+
+                    <separator string="Recommendations"/>
+                    <field name="recommendation" widget="html"/>
+
+                    <separator string="Diagnoses"/>
+                    <field name="diagnoses_ids" context="{'default_visit_id': id}">
+                        <list editable="bottom">
+                            <field name="disease_id"/>
+                            <field name="severity"/>
+                            <field name="approved" readonly="1"/>
+                            <field name="approved_by_doctor_id" readonly="1"/>
+                            <field name="approved_date" readonly="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- CALENDAR -->
+    <record id="view_hr_hospital_patient_visit_calendar" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.visit.calendar</field>
+        <field name="model">hr.hospital.patient.visit</field>
+        <field name="arch" type="xml">
+            <calendar string="Visits" date_start="planned_date" color="doctor_id">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- PIVOT -->
+    <record id="view_hr_hospital_patient_visit_pivot" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.visit.pivot</field>
+        <field name="model">hr.hospital.patient.visit</field>
+        <field name="arch" type="xml">
+            <pivot string="Visits analysis">
+                <field name="doctor_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="visit_count" type="measure" string="Visits"/>
+                <field name="cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ACTION: Visits -->
+    <record id="action_hr_hospital_patient_visit" model="ir.actions.act_window">
+        <field name="name">Visits</field>
+        <field name="res_model">hr.hospital.patient.visit</field>
+        <field name="view_mode">list,form,calendar,pivot</field>
+        <field name="search_view_id" ref="view_hr_hospital_patient_visit_search"/>
+    </record>
+
+    <!-- ✅ SERVER ACTION: pivot current month (no JS domain eval) -->
+    <record id="action_hr_hospital_patient_visit_pivot_month_srv" model="ir.actions.server">
+        <field name="name">Visits Pivot (This month)</field>
+        <field name="model_id" ref="model_hr_hospital_patient_visit"/>
+        <field name="state">code</field>
+        <field name="code">
+        action = env['hr.hospital.patient.visit'].action_open_pivot_current_month()
+        </field>
+    </record>
+
+</odoo>

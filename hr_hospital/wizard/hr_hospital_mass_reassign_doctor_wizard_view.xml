@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Mass reassign doctor wizard -->
+    <record id="view_mass_reassign_doctor_wizard_form" model="ir.ui.view">
+      <field name="name">mass.reassign.doctor.wizard.form</field>
+      <field name="model">mass.reassign.doctor.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Bulk Doctor Reassignment">
+          <group>
+            <group>
+              <field name="old_doctor_id" options="{'no_create': True}"/>
+              <field name="new_doctor_id" required="1" options="{'no_create': True}"/>
+            </group>
+            <group>
+              <field name="change_date"/>
+            </group>
+          </group>
+
+          <group>
+            <field name="patient_ids"
+                   widget="many2many_tags"
+                   options="{'no_create': True}"
+                   domain="[('personal_doctor_id', '=', old_doctor_id)]"/>
+          </group>
+
+          <group>
+            <!-- reason теперь Text required в модели, тут required можно оставить -->
+            <field name="reason" placeholder="Why are we changing the primary doctor?" required="1"/>
+          </group>
+
+          <footer>
+            <button name="action_apply" type="object" string="Apply" class="btn-primary"/>
+            <button string="Cancel" special="cancel" class="btn-secondary"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_mass_reassign_doctor_wizard" model="ir.actions.act_window">
+      <field name="name">Bulk Doctor Reassignment</field>
+      <field name="res_model">mass.reassign.doctor.wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+      <field name="view_id" ref="view_mass_reassign_doctor_wizard_form"/>
+    </record>
+
+    <!-- Show in Patients list -> Actions menu -->
+    <record id="server_action_mass_reassign_doctor" model="ir.actions.server">
+      <field name="name">Bulk Doctor Reassignment</field>
+      <field name="model_id" ref="model_hr_hospital_patient"/>
+      <field name="binding_model_id" ref="model_hr_hospital_patient"/>
+      <field name="binding_view_types">list</field>
+      <field name="state">code</field>
+      <field name="code">
+action = {
+    "type": "ir.actions.act_window",
+    "name": "Bulk Doctor Reassignment",
+    "res_model": "mass.reassign.doctor.wizard",
+    "view_mode": "form",
+    "target": "new",
+    "view_id": env.ref("hr_hospital.view_mass_reassign_doctor_wizard_form").id,
+    "context": {
+        "default_patient_ids": [(6, 0, records.ids)],
+    },
+}
+      </field>
+    </record>
+  </data>
+</odoo>

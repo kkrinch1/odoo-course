@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+    <!-- LIST (TREE) -->
     <record id="view_hr_hospital_disease_list" model="ir.ui.view">
         <field name="name">hr.hospital.disease.list</field>
         <field name="model">hr.hospital.disease</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="code"/>
-                <field name="active"/>
+                <field name="icd10_code"/>
+                <field name="danger_level"/>
+                <field name="contagious"/>
+                <field name="parent_id"/>
             </list>
         </field>
     </record>
 
+    <!-- FORM -->
     <record id="view_hr_hospital_disease_form" model="ir.ui.view">
         <field name="name">hr.hospital.disease.form</field>
         <field name="model">hr.hospital.disease</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Disease">
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -26,19 +31,67 @@
 
                     <group col="2">
                         <group>
-                            <field name="code"/>
+                            <field name="icd10_code"/>
+                            <field name="parent_id"/>
                         </group>
                         <group>
-                            <field name="active"/>
+                            <field name="danger_level"/>
+                            <field name="contagious"/>
                         </group>
                     </group>
 
-                    <separator string="Опис"/>
-                    <group col="1">
-                        <field name="description"/>
-                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <field name="symptoms" placeholder="Symptoms..." nolabel="1"/>
+                                <field name="region_country_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+
+                        <page string="Children">
+                            <field name="child_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="icd10_code"/>
+                                    <field name="danger_level"/>
+                                    <field name="contagious"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
+
+    <!-- SEARCH -->
+    <record id="view_hr_hospital_disease_search" model="ir.ui.view">
+        <field name="name">hr.hospital.disease.search</field>
+        <field name="model">hr.hospital.disease</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="icd10_code"/>
+                <field name="danger_level"/>
+                <field name="contagious"/>
+
+                <filter string="Contagious" name="filter_contagious" domain="[('contagious','=',True)]"/>
+                <filter string="Critical" name="filter_critical" domain="[('danger_level','=','critical')]"/>
+
+                <group>
+                    <filter string="Danger level" name="group_danger" context="{'group_by':'danger_level'}"/>
+                    <filter string="Parent" name="group_parent" context="{'group_by':'parent_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_hr_hospital_disease" model="ir.actions.act_window">
+        <field name="name">Diseases</field>
+        <field name="res_model">hr.hospital.disease</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hr_hospital_disease_search"/>
+    </record>
+
 </odoo>
