@@ -5,6 +5,7 @@
         <!-- Level 1 -->
         <record id="disease_cat_infectious" model="hr.hospital.disease">
             <field name="name">Infectious diseases</field>
+            <field name="disease_type">infectious</field>
             <field name="danger_level">medium</field>
             <field name="contagious">0</field>
             <field name="symptoms">General category for infectious diseases.</field>
@@ -13,6 +14,7 @@
         <!-- Level 2 -->
         <record id="disease_cat_viral" model="hr.hospital.disease">
             <field name="name">Viral infections</field>
+            <field name="disease_type">infectious</field>
             <field name="parent_id" ref="disease_cat_infectious"/>
             <field name="danger_level">medium</field>
             <field name="contagious">1</field>
@@ -22,6 +24,7 @@
         <!-- Level 3 (leaf) -->
         <record id="disease_influenza" model="hr.hospital.disease">
             <field name="name">Influenza</field>
+            <field name="disease_type">infectious</field>
             <field name="parent_id" ref="disease_cat_viral"/>
             <field name="icd10_code">J10</field>
             <field name="danger_level">medium</field>
@@ -32,6 +35,7 @@
 
         <record id="disease_covid19" model="hr.hospital.disease">
             <field name="name">COVID-19</field>
+            <field name="disease_type">infectious</field>
             <field name="parent_id" ref="disease_cat_viral"/>
             <field name="icd10_code">U07.1</field>
             <field name="danger_level">high</field>
@@ -43,6 +47,7 @@
         <!-- Level 2 -->
         <record id="disease_cat_bacterial" model="hr.hospital.disease">
             <field name="name">Bacterial infections</field>
+            <field name="disease_type">infectious</field>
             <field name="parent_id" ref="disease_cat_infectious"/>
             <field name="danger_level">medium</field>
             <field name="contagious">1</field>
@@ -52,17 +57,19 @@
         <!-- Leaf -->
         <record id="disease_tuberculosis" model="hr.hospital.disease">
             <field name="name">Tuberculosis</field>
+            <field name="disease_type">infectious</field>
             <field name="parent_id" ref="disease_cat_bacterial"/>
             <field name="icd10_code">A15</field>
             <field name="danger_level">high</field>
             <field name="contagious">1</field>
             <field name="symptoms">Persistent cough, weight loss, night sweats.</field>
-            <field name="region_country_ids" eval="[(6, 0, [ref('base.de'), ref('base.it'), ref('base.it')])]"/>
+            <field name="region_country_ids" eval="[(6, 0, [ref('base.de'), ref('base.it')])]"/>
         </record>
 
         <!-- Level 1 -->
         <record id="disease_cat_respiratory" model="hr.hospital.disease">
             <field name="name">Respiratory diseases</field>
+            <field name="disease_type">chronic</field>
             <field name="danger_level">low</field>
             <field name="contagious">0</field>
             <field name="symptoms">General category for respiratory diseases.</field>
@@ -71,6 +78,7 @@
         <!-- Leaf -->
         <record id="disease_asthma" model="hr.hospital.disease">
             <field name="name">Asthma</field>
+            <field name="disease_type">chronic</field>
             <field name="parent_id" ref="disease_cat_respiratory"/>
             <field name="icd10_code">J45</field>
             <field name="danger_level">medium</field>
@@ -82,6 +90,7 @@
         <!-- Level 1 -->
         <record id="disease_cat_cardiovascular" model="hr.hospital.disease">
             <field name="name">Cardiovascular diseases</field>
+            <field name="disease_type">chronic</field>
             <field name="danger_level">medium</field>
             <field name="contagious">0</field>
             <field name="symptoms">General category for cardiovascular diseases.</field>
@@ -90,6 +99,7 @@
         <!-- Leaf -->
         <record id="disease_hypertension" model="hr.hospital.disease">
             <field name="name">Hypertension</field>
+            <field name="disease_type">chronic</field>
             <field name="parent_id" ref="disease_cat_cardiovascular"/>
             <field name="icd10_code">I10</field>
             <field name="danger_level">medium</field>
@@ -101,6 +111,7 @@
         <!-- Level 1 -->
         <record id="disease_cat_neurology" model="hr.hospital.disease">
             <field name="name">Neurological disorders</field>
+            <field name="disease_type">chronic</field>
             <field name="danger_level">low</field>
             <field name="contagious">0</field>
             <field name="symptoms">General category for neurological disorders.</field>
@@ -109,6 +120,7 @@
         <!-- Leaf -->
         <record id="disease_migraine" model="hr.hospital.disease">
             <field name="name">Migraine</field>
+            <field name="disease_type">chronic</field>
             <field name="parent_id" ref="disease_cat_neurology"/>
             <field name="icd10_code">G43</field>
             <field name="danger_level">low</field>

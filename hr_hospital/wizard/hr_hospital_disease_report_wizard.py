@@ -37,6 +37,26 @@ class DiseaseReportWizard(models.TransientModel):
 
     only_approved = fields.Boolean(string="Only approved diagnoses", default=False)
 
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+
+        today = fields.Date.context_today(self)
+        first_day = today.replace(day=1)
+
+        if "date_from" in fields_list and not res.get("date_from"):
+            res["date_from"] = first_day
+        if "date_to" in fields_list and not res.get("date_to"):
+            res["date_to"] = today
+
+        active_model = self.env.context.get("active_model")
+        active_ids = self.env.context.get("active_ids", [])
+
+        if active_model == "hr.hospital.doctor" and active_ids and "doctor_ids" in fields_list:
+            res["doctor_ids"] = [(6, 0, active_ids)]
+
+        return res
+
     @api.constrains("date_from", "date_to")
     def _check_dates(self):
         for w in self:
@@ -46,7 +66,7 @@ class DiseaseReportWizard(models.TransientModel):
     def _build_domain(self):
         self.ensure_one()
         domain = []
-        # date range based on visit planned_date
+
         domain += [("visit_id.planned_date", ">=", fields.Datetime.to_datetime(self.date_from))]
         domain += [("visit_id.planned_date", "<", fields.Datetime.to_datetime(self.date_to) + timedelta(days=1))]
 
@@ -68,11 +88,24 @@ class DiseaseReportWizard(models.TransientModel):
     def action_open_results(self):
         self.ensure_one()
         diagnoses = self.get_diagnoses()
+
+        ctx = {}
+        if self.report_type == "summary":
+            group_map = {
+                "doctor": "doctor_id",
+                "disease": "disease_id",
+                "month": "visit_planned_date:month",
+                "country": "patient_country_id",
+            }
+            group_by_value = group_map.get(self.group_by)
+            if group_by_value:
+                ctx["group_by"] = group_by_value
+
         return {
             "type": "ir.actions.act_window",
             "name": "Diagnoses report",
             "res_model": "hr.hospital.medical.diagnosis",
             "view_mode": "list,form",
             "domain": [("id", "in", diagnoses.ids)],
-            "context": {"search_default_group_by_%s" % self.group_by: 1} if self.report_type == "summary" else {},
+            "context": ctx,
         }

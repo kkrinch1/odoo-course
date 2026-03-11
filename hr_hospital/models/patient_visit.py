@@ -34,7 +34,7 @@ class HrHospitalPatientVisit(models.Model):
         default="planned",
         required=True,
     )
-
+    active = fields.Boolean(default=True)
     planned_date = fields.Datetime(string="Scheduled Date & Time", required=True)
     action_date = fields.Datetime(string="Actual Date & Time", readonly=True)
 
@@ -365,6 +365,15 @@ class HrHospitalPatientVisit(models.Model):
     # OVERRIDES
     # -------------------------
     def write(self, vals):
+        # 1️⃣ Запрет архивирования если есть диагнозы
+        if vals.get("active") is False:
+            visits_with_diagnosis = self.filtered(lambda v: v.diagnoses_ids)
+            if visits_with_diagnosis:
+                raise ValidationError(
+                    "You cannot archive visits who have diagnosed with this patient's diagnosis."
+                )
+
+        # 2️⃣ Запрет изменения врача/даты если визит уже произошёл
         protected = {"doctor_id", "patient_id", "planned_date"}
         if protected.intersection(vals.keys()):
             for rec in self:
@@ -372,6 +381,7 @@ class HrHospitalPatientVisit(models.Model):
                     raise ValidationError(
                         "You cannot change the doctor/date/time for a visit that has already occurred."
                     )
+
         return super().write(vals)
 
     def unlink(self):
@@ -379,3 +389,5 @@ class HrHospitalPatientVisit(models.Model):
             if rec.diagnoses_ids:
                 raise ValidationError("You cannot delete a visit that has diagnoses.")
         return super().unlink()
+
+    

@@ -9,10 +9,36 @@ class HrHospitalDisease(models.Model):
     _name = "hr.hospital.disease"
     _description = "Disease"
     _order = "name"
+    _parent_store = True
 
     name = fields.Char(required=True)
-    parent_id = fields.Many2one("hr.hospital.disease", string="Parent Disease", ondelete="set null")
-    child_ids = fields.One2many("hr.hospital.disease", "parent_id", string="Child Diseases")
+
+    parent_id = fields.Many2one(
+        "hr.hospital.disease",
+        string="Parent Disease",
+        ondelete="set null",
+        index=True,
+    )
+    child_ids = fields.One2many(
+        "hr.hospital.disease",
+        "parent_id",
+        string="Child Diseases",
+    )
+    parent_path = fields.Char(index=True)
+
+    disease_type = fields.Selection(
+        selection=[
+            ("infectious", "Infectious"),
+            ("chronic", "Chronic"),
+            ("acute", "Acute"),
+            ("genetic", "Genetic"),
+            ("other", "Other"),
+        ],
+        string="Disease Type",
+        default="other",
+        required=True,
+        index=True,
+    )
 
     icd10_code = fields.Char(string="ICD-10 Code", size=10, index=True)
 
@@ -68,12 +94,11 @@ class HrHospitalDisease(models.Model):
     # ------------------------------------------------------------
     @api.constrains("icd10_code")
     def _check_icd10_code(self):
-        # ICD-10 формат в реальности шире, но для учебного модуля достаточно мягкой проверки:
-        #  - максимум 10 символов (это поле уже size=10)
-        #  - разрешим буквы/цифры/точку/дефис (без пробелов)
         pattern = re.compile(r"^[A-Z0-9.\-]{1,10}$")
         for rec in self:
             if not rec.icd10_code:
                 continue
             if not pattern.match(rec.icd10_code):
-                raise ValidationError("ICD-10 Code format is invalid (use A-Z, 0-9, '.', '-').")
+                raise ValidationError(
+                    "ICD-10 Code format is invalid (use A-Z, 0-9, '.', '-')."
+                )

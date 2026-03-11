@@ -15,8 +15,6 @@ class HrHospitalMedicalDiagnosis(models.Model):
         string="Visit",
         required=True,
         ondelete="cascade",
-        # Only completed visits from the last 30 days.
-        # Use a *callable* domain so the window stays dynamic.
         domain=lambda self: [
             ("state", "=", "done"),
             ("planned_date", ">=", fields.Datetime.now() - relativedelta(days=30)),
@@ -27,7 +25,6 @@ class HrHospitalMedicalDiagnosis(models.Model):
         "hr.hospital.disease",
         string="Disease",
         required=True,
-        # safer / standard: list for 'in'
         domain="[('contagious','=',True), ('danger_level','in',['high','critical'])]",
     )
 
@@ -59,8 +56,17 @@ class HrHospitalMedicalDiagnosis(models.Model):
         copy=False,
     )
 
+    # Technical measure field for pivot / graph (COUNT via SUM)
+    diagnosis_count = fields.Integer(
+        string="Diagnoses",
+        default=1,
+        readonly=True,
+        aggregator="sum",
+        help="Technical measure field for pivot/graph: each diagnosis contributes 1.",
+    )
+
     # ==========================================================
-    # RELATED (store=True) fields for GROUP BY in search view
+    # RELATED (store=True) fields for GROUP BY / analytics
     # ==========================================================
     doctor_id = fields.Many2one(
         "hr.hospital.doctor",
@@ -85,12 +91,18 @@ class HrHospitalMedicalDiagnosis(models.Model):
         readonly=True,
     )
 
+    disease_type = fields.Selection(
+        related="disease_id.disease_type",
+        string="Disease Type",
+        store=True,
+        readonly=True,
+    )
+
     # -------------------------
     # CONSTRAINTS
     # -------------------------
     @api.constrains("visit_id")
     def _check_visit_is_recent_and_done(self):
-        # during module install/demo load we don't want hard blocks
         if self.env.context.get("install_mode"):
             return
 
@@ -133,7 +145,7 @@ class HrHospitalMedicalDiagnosis(models.Model):
 
         for rec in self:
             if rec.approved:
-                continue  # already approved, don't rewrite timestamps
+                continue
 
             if not rec.visit_id or not rec.visit_id.doctor_id:
                 raise UserError("Diagnosis must be linked to a visit with a doctor.")
@@ -149,11 +161,13 @@ class HrHospitalMedicalDiagnosis(models.Model):
                 if visit_doc != cur_doc:
                     raise UserError("Only the visit doctor can approve this diagnosis.")
 
-            rec.write({
-                "approved": True,
-                "approved_by_doctor_id": cur_doc.id,
-                "approved_date": now,
-            })
+            rec.write(
+                {
+                    "approved": True,
+                    "approved_by_doctor_id": cur_doc.id,
+                    "approved_date": now,
+                }
+            )
 
     def action_unapprove(self):
         cur_doc = self._current_doctor()
@@ -164,8 +178,10 @@ class HrHospitalMedicalDiagnosis(models.Model):
             if not rec.approved:
                 continue
 
-            rec.write({
-                "approved": False,
-                "approved_by_doctor_id": False,
-                "approved_date": False,
-            })
+            rec.write(
+                {
+                    "approved": False,
+                    "approved_by_doctor_id": False,
+                    "approved_date": False,
+                }
+            )

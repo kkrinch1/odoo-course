@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="paperformat_hr_hospital_doctor_a4" model="report.paperformat">
+        <field name="name">Doctor Report A4</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_hr_hospital_doctor" model="ir.actions.report">
+        <field name="name">Doctor Report</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_hospital.report_hr_hospital_doctor_document</field>
+        <field name="report_file">hr_hospital.report_hr_hospital_doctor_document</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_hr_hospital_doctor_a4"/>
+    </record>
+
+    <template id="report_hr_hospital_doctor_document">
+        <t t-call="web.html_container">
+            <style>
+                .doctor-report {
+                    font-size: 12px;
+                    color: #222222;
+                }
+                .doctor-report .report-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    border-bottom: 2px solid #3f6b5b;
+                    padding-bottom: 12px;
+                    margin-bottom: 16px;
+                }
+                .doctor-report .company-meta {
+                    width: 68%;
+                }
+                .doctor-report .company-logo {
+                    width: 110px;
+                    max-height: 90px;
+                }
+                .doctor-report .report-title {
+                    margin: 0 0 6px 0;
+                    font-size: 22px;
+                }
+                .doctor-report .report-subtitle {
+                    margin: 0 0 16px 0;
+                    font-size: 14px;
+                    color: #57606a;
+                }
+                .doctor-report .section-title {
+                    margin: 18px 0 8px 0;
+                    font-size: 15px;
+                    font-weight: 700;
+                    color: #26453a;
+                }
+                .doctor-report table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                .doctor-report th,
+                .doctor-report td {
+                    border: 1px solid #d0d7de;
+                    padding: 6px 8px;
+                    text-align: left;
+                    vertical-align: top;
+                }
+                .doctor-report th {
+                    background: #f4f7f6;
+                    font-weight: 700;
+                }
+                .doctor-report .status-badge {
+                    display: inline-block;
+                    padding: 3px 8px;
+                    border-radius: 10px;
+                    font-weight: 700;
+                    font-size: 11px;
+                }
+                .doctor-report .status-planned {
+                    background: #fff3b0;
+                    color: #6e5300;
+                }
+                .doctor-report .status-done {
+                    background: #c7f0d8;
+                    color: #155d2d;
+                }
+                .doctor-report .status-cancelled {
+                    background: #ffd5d2;
+                    color: #9f1c1c;
+                }
+                .doctor-report .status-no_show {
+                    background: #e5e7eb;
+                    color: #374151;
+                }
+                .doctor-report .report-footer {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    font-size: 10px;
+                    color: #57606a;
+                    border-top: 1px solid #d0d7de;
+                    padding-top: 6px;
+                }
+                .doctor-report .content-bottom-space {
+                    height: 28px;
+                }
+                .doctor-report-page-break {
+                    page-break-before: always;
+                    break-before: page;
+                }
+            </style>
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="company" t-value="env.company"/>
+                <t t-set="report_date" t-value="doc._get_report_print_datetime()"/>
+                <t t-if="doc != docs[0]">
+                    <div class="doctor-report-page-break"/>
+                </t>
+                <div class="page">
+                    <div class="doctor-report">
+                        <div class="report-header">
+                            <div class="company-meta">
+                                <h2 class="report-title" t-out="doc.full_name"/>
+                                <p class="report-subtitle">
+                                    <span t-out="doc.speciality_id.name or 'No specialty'"/>
+                                </p>
+                                <div><strong t-out="company.name"/></div>
+                                <div t-if="company.street or company.city or company.country_id">
+                                    <span t-out="company.street or ''"/>
+                                    <t t-if="company.street and (company.city or company.country_id)">, </t>
+                                    <span t-out="company.city or ''"/>
+                                    <t t-if="company.city and company.country_id">, </t>
+                                    <span t-out="company.country_id.name or ''"/>
+                                </div>
+                                <div t-if="company.phone or company.email">
+                                    <span t-out="company.phone or ''"/>
+                                    <t t-if="company.phone and company.email"> | </t>
+                                    <span t-out="company.email or ''"/>
+                                </div>
+                            </div>
+                            <div t-if="company.logo">
+                                <img t-att-src="image_data_uri(company.logo)" alt="Company Logo" class="company-logo"/>
+                            </div>
+                        </div>
+
+                        <h3 class="section-title">Visit History</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Patient</th>
+                                    <th>Visit Type</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc._get_report_visits()" t-as="visit">
+                                    <td t-out="doc._format_report_datetime(visit.planned_date)"/>
+                                    <td t-out="visit.patient_id.full_name or visit.patient_id.display_name"/>
+                                    <td t-out="doc._get_visit_type_label(visit)"/>
+                                    <td>
+                                        <span t-attf-class="status-badge status-#{visit.state}">
+                                            <t t-out="doc._get_visit_state_label(visit)"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr t-if="not doc._get_report_visits()">
+                                    <td colspan="4">No visit history.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 class="section-title">Patients</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Gender</th>
+                                    <th>Date of Birth</th>
+                                    <th>Phone</th>
+                                    <th>Current Visit Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc._get_report_patient_rows()" t-as="row">
+                                    <td t-out="row['patient_name']"/>
+                                    <td t-out="row['sex_label']"/>
+                                    <td t-out="doc._format_report_date(row['birth_date'])"/>
+                                    <td t-out="row['phone'] or ''"/>
+                                    <td>
+                                        <span t-attf-class="status-badge status-#{row['state']}">
+                                            <t t-out="row['state_label']"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr t-if="not doc._get_report_patient_rows()">
+                                    <td colspan="5">No patients assigned through visits.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="content-bottom-space"/>
+                        <div class="report-footer">
+                            <span t-out="doc._format_report_datetime(report_date)"/>
+                            <t t-if="company.city">
+                                <span> | </span>
+                                <span t-out="company.city"/>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

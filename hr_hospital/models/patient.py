@@ -50,7 +50,24 @@ class HrHospitalPatient(models.Model):
         string="Primary Doctor History",
     )
 
+    visit_ids = fields.One2many(
+        "hr.hospital.patient.visit",
+        "patient_id",
+        string="Visits",
+    )
 
+    visit_count = fields.Integer(
+        string="Visits Count",
+        compute="_compute_visit_count",
+    )
+
+    # -------------------------
+    # COMPUTES
+    # -------------------------
+    @api.depends("visit_ids")
+    def _compute_visit_count(self):
+        for rec in self:
+            rec.visit_count = len(rec.visit_ids)
 
     # -------------------------
     # OVERRIDES
@@ -89,24 +106,57 @@ class HrHospitalPatient(models.Model):
                     )
         return res
 
+    # -------------------------
     # HELPERS
+    # -------------------------
     def _create_doctor_history(self, new_doctor_id, reason=None, change_date=None):
         self.ensure_one()
-        self.env["patient.doctor.history"].create({
-            "patient_id": self.id,
-            "doctor_id": new_doctor_id,
-            "assign_date": change_date or fields.Date.context_today(self),
-            "change_reason": reason or "",
-        })
+        self.env["patient.doctor.history"].create(
+            {
+                "patient_id": self.id,
+                "doctor_id": new_doctor_id,
+                "assign_date": change_date or fields.Date.context_today(self),
+                "change_reason": reason or "",
+            }
+        )
 
+    # -------------------------
+    # ACTIONS
+    # -------------------------
     def action_open_export_card_wizard(self):
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
             "name": "Export Patient Card",
-            "res_model": "hr.hospital.patient.card.export.wizard",
+            "res_model": "patient.card.export.wizard",
             "view_mode": "form",
             "target": "new",
+            "context": {
+                "default_patient_id": self.id,
+            },
+        }
+
+    def action_open_patient_visits(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Patient Visits",
+            "res_model": "hr.hospital.patient.visit",
+            "view_mode": "list,form",
+            "domain": [("patient_id", "=", self.id)],
+            "context": {
+                "default_patient_id": self.id,
+            },
+        }
+
+    def action_create_visit(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "New Visit",
+            "res_model": "hr.hospital.patient.visit",
+            "view_mode": "form",
+            "target": "current",
             "context": {
                 "default_patient_id": self.id,
             },

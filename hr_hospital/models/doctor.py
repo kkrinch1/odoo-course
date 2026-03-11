@@ -11,10 +11,8 @@ class HrHospitalDoctor(models.Model):
 
     active = fields.Boolean(default=True)
 
-    # system login
     user_id = fields.Many2one("res.users", string="System User")
 
-    # speciality
     speciality_id = fields.Many2one(
         "hr.hospital.doctor.speciality",
         string="Specialty",
@@ -22,14 +20,22 @@ class HrHospitalDoctor(models.Model):
         index=True,
     )
 
-    # intern / mentor
     is_intern = fields.Boolean(string="Intern")
     mentor_id = fields.Many2one(
         "hr.hospital.doctor",
         string="Mentor Doctor",
         domain=[("is_intern", "=", False), ("active", "=", True)],
         help="Available only for interns.",
-    )   
+    )
+    intern_ids = fields.One2many(
+        "hr.hospital.doctor",
+        "mentor_id",
+        string="Interns",
+    )
+    intern_names = fields.Char(
+        string="Intern Names",
+        compute="_compute_intern_names",
+    )
 
     license_number = fields.Char(string="License Number", required=True, copy=False)
     license_issue_date = fields.Date(string="License Issue Date")
@@ -46,6 +52,11 @@ class HrHospitalDoctor(models.Model):
         "hr.hospital.doctor.schedule",
         "doctor_id",
         string="Work Schedule",
+    )
+    visit_ids = fields.One2many(
+        "hr.hospital.patient.visit",
+        "doctor_id",
+        string="Visits",
     )
 
     study_country_id = fields.Many2one("res.country", string="Country of Study")
@@ -71,10 +82,17 @@ class HrHospitalDoctor(models.Model):
         for doctor in self:
             if doctor.license_issue_date:
                 issue = doctor.license_issue_date
-                years = today.year - issue.year - ((today.month, today.day) < (issue.month, issue.day))
+                years = today.year - issue.year - (
+                    (today.month, today.day) < (issue.month, issue.day)
+                )
                 doctor.experience_years = max(years, 0)
             else:
                 doctor.experience_years = 0
+
+    @api.depends("intern_ids.full_name")
+    def _compute_intern_names(self):
+        for doctor in self:
+            doctor.intern_names = ", ".join(doctor.intern_ids.mapped("full_name"))
 
     # -------------------------
     # CONSTRAINTS
@@ -87,9 +105,10 @@ class HrHospitalDoctor(models.Model):
                     raise ValidationError("A doctor cannot be their own mentor.")
                 if doc.mentor_id.is_intern:
                     raise ValidationError("An intern cannot be selected as a mentor.")
-            # mentor only for interns
             if not doc.is_intern and doc.mentor_id:
-                raise ValidationError("The 'Mentor Doctor' field is available only for interns.")
+                raise ValidationError(
+                    "The 'Mentor Doctor' field is available only for interns."
+                )
 
     # -------------------------
     # ONCHANGE
@@ -99,28 +118,110 @@ class HrHospitalDoctor(models.Model):
         for doc in self:
             if not doc.is_intern:
                 doc.mentor_id = False
-            else:
-                if not doc.mentor_id:
-                    mentor = self.env["hr.hospital.doctor"].search(
-                        [("is_intern", "=", False), ("active", "=", True)], limit=1
-                    )
-                    doc.mentor_id = mentor
+            elif not doc.mentor_id:
+                mentor = self.env["hr.hospital.doctor"].search(
+                    [("is_intern", "=", False), ("active", "=", True)],
+                    limit=1,
+                )
+                doc.mentor_id = mentor
 
     # -------------------------
     # ARCHIVE RULE
     # -------------------------
     def write(self, vals):
-        # prevent archiving doctors with active (not finished) visits
-        if "active" in vals and vals["active"] is False:
+        if vals.get("active") is False:
             Visit = self.env["hr.hospital.patient.visit"]
             for doc in self:
-                active_visits = Visit.search_count([
-                    ("doctor_id", "=", doc.id),
-                    ("state", "in", ["planned"]),
-                ])
+                active_visits = Visit.search_count(
+                    [
+                        ("doctor_id", "=", doc.id),
+                        ("state", "in", ["planned"]),
+                    ]
+                )
                 if active_visits:
                     raise ValidationError("Cannot archive a doctor with active visits.")
         return super().write(vals)
+
+    # -------------------------
+    # ACTIONS
+    # -------------------------
+    def action_create_visit(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "New Visit",
+            "res_model": "hr.hospital.patient.visit",
+            "view_mode": "form",
+            "target": "current",
+            "context": {
+                "default_doctor_id": self.id,
+                "default_speciality_id": self.speciality_id.id or False,
+            },
+        }
+
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return f"doctor_report_{self.id}"
+
+    def _get_report_visits(self):
+        self.ensure_one()
+        return self.visit_ids.sorted(
+            key=lambda visit: (visit.planned_date or fields.Datetime.now(), visit.id),
+            reverse=True,
+        )
+
+    def _get_report_print_datetime(self):
+        self.ensure_one()
+        return fields.Datetime.now()
+
+    def _format_report_datetime(self, value):
+        self.ensure_one()
+        if not value:
+            return ""
+        dt_local = fields.Datetime.context_timestamp(self, value)
+        return dt_local.strftime("%Y-%m-%d %H:%M")
+
+    def _format_report_date(self, value):
+        self.ensure_one()
+        if not value:
+            return ""
+        return fields.Date.to_string(value)
+
+    def _get_visit_type_label(self, visit):
+        self.ensure_one()
+        return dict(visit._fields["visit_type"].selection).get(
+            visit.visit_type, visit.visit_type
+        )
+
+    def _get_visit_state_label(self, visit):
+        self.ensure_one()
+        return dict(visit._fields["state"].selection).get(visit.state, visit.state)
+
+    def _get_report_patient_rows(self):
+        self.ensure_one()
+        rows = []
+        seen_patient_ids = set()
+        state_labels = dict(
+            self.env["hr.hospital.patient.visit"]._fields["state"].selection
+        )
+        sex_labels = dict(self.env["hr.hospital.patient"]._fields["sex"].selection)
+
+        for visit in self._get_report_visits():
+            patient = visit.patient_id
+            if not patient or patient.id in seen_patient_ids:
+                continue
+            seen_patient_ids.add(patient.id)
+            rows.append(
+                {
+                    "patient_name": patient.full_name or patient.display_name,
+                    "sex_label": sex_labels.get(patient.sex, ""),
+                    "birth_date": patient.birth_date,
+                    "phone": patient.phone,
+                    "state": visit.state,
+                    "state_label": state_labels.get(visit.state, visit.state),
+                }
+            )
+        return rows
 
     # -------------------------
     # DISPLAY NAME
