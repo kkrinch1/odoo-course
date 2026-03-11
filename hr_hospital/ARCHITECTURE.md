@@ -1,223 +1,418 @@
-# Project Architecture – Odoo 19 (hr_hospital)
+# Архітектура модуля hr_hospital
 
----
+## 1. Призначення
 
-## 🇬🇧 English Version
+`hr_hospital` — це користувацький модуль Odoo 19 для автоматизації базових процесів лікарні.
 
-### 1. Overview
+Модуль охоплює:
 
-This project is built on **Odoo 19 (source installation)** with a clean local development architecture that includes:
+- лікарів
+- пацієнтів
+- візити
+- діагнози
+- графіки роботи лікарів
+- історію зміни персонального лікаря
+- допоміжні wizard-операції
+- друкований звіт по лікарю
 
-- Python 3.11 (virtual environment)
-- Odoo 19 server
-- PostgreSQL database
-- Custom modules (hr_hospital)
-- PyCharm IDE for development and debugging
+Модуль реалізований як окремий custom addon і підключається через `addons_path` без змін у стандартному коді Odoo.
 
-All components run locally and are connected via configuration files and controlled runtime context.
+## 2. Середовище виконання
 
----
+Розробка та оновлення модуля виконуються в локальному середовищі Odoo 19.
 
-### 2. Project Structure
+Основні компоненти:
 
-odoo-dev/
-│
-├── venv/                # Python virtual environment
-├── odoo/                # Odoo source code
-│   ├── odoo-bin         # Main server entry point
-│   ├── odoo/            # Core framework
-│   ├── addons/          # Official modules
-│   └── odoo.conf        # Server configuration
-│
-├── addons-custom/
-│   └── hr_hospital/     # Custom module
-│
-└── PostgreSQL Database  # odoo_db1
+- Python virtual environment
+- вихідний код Odoo 19
+- PostgreSQL
+- користувацький модуль `hr_hospital`
 
-The Odoo server is always started from the root directory of the Odoo repository using `odoo-bin`.
+Типова команда запуску:
 
----
-
-### 3. Python Environment
-
-The project uses an isolated virtual environment:
-
-/Users/alex/odoo-dev/venv/bin/python
-
-This ensures:
-- Dependency isolation
-- Compatibility control
-- No interference with system Python
-
-Special attention was given to avoid PYTHONPATH conflicts, especially with the standard `http` module.
-
----
-
-### 4. Odoo Server Execution
-
-The server is started using:
-
+```bash
 python odoo-bin -c odoo.conf -d odoo_db1 -u hr_hospital --dev=all
+```
 
-Where:
-- `odoo-bin` is the entry point
-- `odoo.conf` contains DB and addons configuration
-- `odoo_db1` is the PostgreSQL database
-- `-u hr_hospital` updates the custom module
-- `--dev=all` enables development mode
+Де:
 
----
+- `odoo-bin` запускає сервер Odoo
+- `odoo.conf` містить конфігурацію сервера та `addons_path`
+- `odoo_db1` — робоча база даних
+- `-u hr_hospital` оновлює модуль після змін
+- `--dev=all` вмикає режим розробника для XML/QWeb/assets
 
-### 5. PostgreSQL Integration
+## 3. Структура модуля
 
-Odoo connects to PostgreSQL via:
+```text
+hr_hospital/
+├── __manifest__.py
+├── security/
+│   └── ir.model.access.csv
+├── models/
+│   ├── abstract_person.py
+│   ├── patient.py
+│   ├── doctor.py
+│   ├── patient_visit.py
+│   ├── medical_diagnosis.py
+│   ├── disease.py
+│   ├── doctor_schedule.py
+│   ├── doctor_speciality.py
+│   ├── patient_doctor_history.py
+│   └── contact_person.py
+├── views/
+│   ├── patient_views.xml
+│   ├── doctor_views.xml
+│   ├── patient_visit_views.xml
+│   ├── diagnosis_views.xml
+│   ├── disease_views.xml
+│   ├── doctor_schedule_views.xml
+│   ├── doctor_speciality_views.xml
+│   ├── history_views.xml
+│   └── hr_hospital_menu.xml
+├── wizard/
+│   ├── hr_hospital_reschedule_visit_wizard.py
+│   ├── hr_hospital_mass_reassign_doctor_wizard.py
+│   ├── hr_hospital_doctor_schedule_wizard.py
+│   ├── hr_hospital_patient_card_export_wizard.py
+│   └── hr_hospital_disease_report_wizard.py
+├── report/
+│   └── hr_hospital_doctor_report.xml
+└── demo/
+    └── *.xml
+```
 
-- Host: 127.0.0.1
-- Port: 5432
-- User: odoo
-- Database: odoo_db1
+## 4. Функціональні шари
 
-The database layer stores:
-- Models
-- Business data
-- Metadata
-- Access control
+### 4.1 Шар моделей
 
----
+Основна бізнес-логіка реалізована у Python-моделях:
 
-### 6. Custom Module Architecture
+- computed fields
+- constraints
+- onchange-логіка
+- action methods
+- helper methods для звітів
 
-The `hr_hospital` module is separated from the core and included via `addons_path`.
+Центральні бізнес-сутності модуля:
 
-This guarantees:
-- Clean separation of concerns
-- Safe upgrades
-- Modular development
+- `hr.hospital.patient`
+- `hr.hospital.doctor`
+- `hr.hospital.patient.visit`
+- `hr.hospital.medical.diagnosis`
 
----
+### 4.2 Шар представлень
 
-### 7. Context & Actions
+XML-представлення забезпечують:
 
-During development, special attention was paid to Odoo context behavior:
+- list view
+- form view
+- search view
+- calendar view для візитів
+- pivot view для візитів
+- kanban view для лікарів
+- меню та actions
 
-- `active_id` exists in form view context
-- `active_ids` exists in list view with selected records
-- Safe pattern: `context.get('active_ids', [])`
+### 4.3 Шар wizard
 
-This prevents frontend evaluation errors.
+Transient-моделі використовуються для короткочасних користувацьких операцій:
 
----
+- перенесення візиту
+- масове перепризначення лікаря
+- генерація графіка лікаря
+- експорт картки пацієнта
+- формування звіту по хворобах
 
-### 8. Development Environment (PyCharm)
+### 4.4 Шар звітів
 
-PyCharm is configured with:
-- Virtual environment interpreter
-- Absolute path to `odoo-bin`
-- Correct working directory
-- Disabled automatic PYTHONPATH injection
+Друк реалізований через QWeb PDF report:
 
-This ensures stable debugging and predictable runtime behavior.
+- модель: `hr.hospital.doctor`
+- файл: `report/hr_hospital_doctor_report.xml`
+- результат: друкований звіт формату A4
 
----
+## 5. Основна предметна модель
 
-### 9. Final Architecture Summary
+### 5.1 Абстрактна особа
 
-The final system architecture provides:
+`abstract.person` — це абстрактна модель, від якої наслідуються лікар і пацієнт.
 
-- Clean dependency isolation
-- Stable runtime execution
-- Clear separation between core and custom modules
-- Reliable database integration
-- Safe context handling
+Вона містить:
 
----
+- ім'я, прізвище, по батькові
+- `full_name`
+- валідацію телефону та email
+- стать
+- дату народження
+- вік
+- країну громадянства
+- мову спілкування
+- зображення через `image.mixin`
 
-## 🇺🇦 Українська версія
+Такий підхід прибирає дублювання полів між пацієнтом і лікарем.
 
-### 1. Загальний опис
+### 5.2 Лікар
 
-Проєкт побудований на **Odoo 19 (встановлення з вихідного коду)** з локальною архітектурою розробки, що включає:
+Модель: `hr.hospital.doctor`
 
-- Python 3.11 (віртуальне середовище)
-- Сервер Odoo 19
-- Базу даних PostgreSQL
-- Користувацький модуль hr_hospital
-- IDE PyCharm для розробки та налагодження
+Лікар зберігає:
 
-Усі компоненти працюють локально та взаємодіють через конфігураційні файли.
+- персональні дані
+- спеціальність
+- номер ліцензії
+- дату видачі ліцензії
+- стаж
+- рейтинг
+- ознаку active
+- зв'язок mentor / intern
+- графік роботи
+- візити, призначені лікарю
 
----
+Основна логіка:
 
-### 2. Структура проєкту
+- унікальність `license_number`
+- перевірка діапазону рейтингу
+- правила для інтерна та ментора
+- заборона архівування при наявності запланованих візитів
+- helper-методи для друкованого звіту
 
-odoo-dev/
-│
-├── venv/                # Віртуальне середовище Python
-├── odoo/                # Вихідний код Odoo
-│   ├── odoo-bin         # Точка входу сервера
-│   ├── odoo/            # Ядро фреймворку
-│   ├── addons/          # Стандартні модулі
-│   └── odoo.conf        # Конфігурація сервера
-│
-├── addons-custom/
-│   └── hr_hospital/     # Користувацький модуль
-│
-└── База PostgreSQL      # odoo_db1
+### 5.3 Пацієнт
 
----
+Модель: `hr.hospital.patient`
 
-### 3. Віртуальне середовище Python
+Пацієнт зберігає:
 
-Використовується ізольоване середовище для:
-- Контролю залежностей
-- Уникнення конфліктів
-- Стабільної роботи Odoo
+- персональні дані
+- паспортні дані
+- групу крові
+- алергії
+- страхову інформацію
+- персонального лікаря
+- контактну особу
+- історію змін лікаря
+- візити
 
-Особливу увагу приділено уникненню конфліктів PYTHONPATH.
+Основна логіка:
 
----
+- автоматичне створення записів історії лікаря
+- обчислення кількості візитів
+- actions для відкриття візитів та експорту картки
 
-### 4. Запуск сервера
+### 5.4 Візит
 
-Сервер запускається через:
+Модель: `hr.hospital.patient.visit`
 
-python odoo-bin -c odoo.conf -d odoo_db1 -u hr_hospital --dev=all
+Візит є центральною операційною моделлю, яка пов'язує пацієнта та лікаря.
 
----
+Візит зберігає:
 
-### 5. Інтеграція з PostgreSQL
+- пацієнта
+- лікаря
+- спеціальність
+- планову дату і час
+- фактичну дату і час
+- статус
+- тип візиту
+- діагнози
+- рекомендації
+- вартість і валюту
 
-Odoo підключається до PostgreSQL через локальний сервер (127.0.0.1:5432).  
-База даних зберігає всі моделі, бізнес-логіку та права доступу.
+Основна логіка:
 
----
+- переходи статусів (`planned`, `done`, `cancelled`, `no_show`)
+- динамічний підбір доступних лікарів
+- перевірка доступності за графіком
+- валідація `action_date`
+- перевірка допустимості призначення лікаря
+- технічне поле `visit_count` для pivot
 
-### 6. Архітектура модуля
+### 5.5 Діагноз
 
-Модуль `hr_hospital` ізольований від ядра та підключений через `addons_path`, що забезпечує модульність і безпечні оновлення.
+Модель: `hr.hospital.medical.diagnosis`
 
----
+Діагноз прив'язаний до візиту та зберігає:
 
-### 7. Контекст та дії
+- хворобу
+- тяжкість
+- ознаку підтвердження
+- лікаря, який підтвердив
+- дату підтвердження
 
-Було враховано особливості контексту Odoo:
-- active_id — для form view
-- active_ids — для list view
-- Безпечний виклик через context.get()
+### 5.6 Допоміжні моделі
 
----
+Додаткові моделі:
 
-### 8. Середовище розробки
+- `hr.hospital.disease`
+- `hr.hospital.doctor.speciality`
+- `hr.hospital.doctor.schedule`
+- `patient.doctor.history`
+- `hr.hospital.contact.person`
 
-PyCharm налаштований з правильним інтерпретатором та робочою директорією, без автоматичного втручання в PYTHONPATH.
+Вони використовуються як довідники, для графіків, історії та контактних даних.
 
----
+## 6. Основні зв'язки між моделями
 
-### 9. Підсумок
+Ключові зв'язки в модулі:
 
-Архітектура забезпечує:
-- Стабільність
-- Модульність
-- Чисту структуру
-- Надійне підключення до БД
-- Безпечну роботу контексту
+- один лікар -> багато візитів
+- один пацієнт -> багато візитів
+- один пацієнт -> багато записів історії лікаря
+- один ментор -> багато інтернів
+- один візит -> багато діагнозів
+- один лікар -> багато записів графіка
+- одна спеціальність -> багато лікарів
+
+Таким чином, `patient_visit` є центральною транзакційною моделлю модуля.
+
+## 7. Архітектура інтерфейсу
+
+### 7.1 Інтерфейс лікаря
+
+Для лікаря реалізовано:
+
+- list view
+- search view
+- form view
+- kanban view
+
+Картка `kanban` показує:
+
+- ПІБ лікаря
+- спеціальність
+- ментора
+- список інтернів для лікаря-ментора
+- кнопки дій
+- стандартне меню картки
+
+### 7.2 Інтерфейс візиту
+
+Для візиту реалізовано:
+
+- list view
+- search view
+- form view
+- calendar view
+- pivot view
+
+На формі візиту є кнопки:
+
+- завершити візит
+- позначити `no-show`
+- скасувати
+- перенести візит
+
+### 7.3 Інтерфейс пацієнта
+
+Форма пацієнта містить:
+
+- персональні та страхові дані
+- історію персонального лікаря
+- лічильник візитів
+- дії для створення та відкриття візитів
+- дію для експорту картки пацієнта
+
+## 8. Архітектура звіту
+
+Друкований звіт по лікарю реалізований через `ir.actions.report` + QWeb template.
+
+Звіт містить:
+
+- логотип компанії та контактні дані
+- ПІБ лікаря та спеціальність
+- історію візитів у зворотному хронологічному порядку
+- таблицю пацієнтів
+- кольорові статуси візитів
+- дату і час друку
+- місто компанії
+
+Технічні характеристики:
+
+- формат сторінки: A4
+- модель звіту: `hr.hospital.doctor`
+- при друці кількох лікарів формується один PDF
+- кожен лікар починається з нової сторінки
+
+Допоміжні методи для звіту реалізовані в `models/doctor.py`.
+
+## 9. Wizard
+
+Для тимчасових операцій використано transient models.
+
+Реалізовані wizard:
+
+- `hr_hospital_reschedule_visit_wizard`
+- `hr_hospital_mass_reassign_doctor_wizard`
+- `hr_hospital_doctor_schedule_wizard`
+- `hr_hospital_patient_card_export_wizard`
+- `hr_hospital_disease_report_wizard`
+
+Це дозволяє не змішувати тимчасові користувацькі дані з основними бізнес-моделями.
+
+## 10. Стратегія завантаження даних
+
+Порядок файлів у `__manifest__.py` має значення.
+
+Використано такий порядок:
+
+- спочатку security
+- далі базові довідникові views
+- далі wizard actions, на які є посилання з кнопок
+- далі основні views моделей
+- далі report
+- далі інші wizard views
+- меню завантажуються в кінці
+
+Такий підхід дозволяє уникати помилок XML reference під час встановлення або оновлення модуля.
+
+## 11. Demo-дані
+
+Модуль містить demo XML для:
+
+- спеціальностей
+- лікарів
+- пацієнтів
+- контактних осіб
+- хвороб
+- графіків
+- візитів
+- діагнозів
+
+Demo-дані використовуються для ручної перевірки:
+
+- зв'язків лікар-пацієнт
+- статусів візитів
+- логіки mentor/intern
+- друкованого звіту
+- роботи wizard
+
+## 12. Валідації та обмеження
+
+Основні контрольні точки модуля:
+
+- валідація телефону та email
+- перевірка дати народження
+- унікальність ліцензії лікаря
+- заборона архівування лікаря з активними візитами
+- логіка статусів візиту
+- перевірка доступності лікаря за графіком
+- консистентність історії персонального лікаря
+
+Бізнес-правила винесені в модельний шар, а не залишені лише на рівні інтерфейсу.
+
+## 13. Підсумок для здачі
+
+З точки зору архітектури, `hr_hospital` — це багатошаровий custom-модуль Odoo, у якому:
+
+- Python-моделі реалізують бізнес-логіку
+- XML-представлення реалізують інтерфейс
+- wizard обробляють тимчасові операції
+- QWeb реалізує друковані звіти
+- demo-дані дозволяють швидко перевірити функціонал
+
+Модуль розрахований на оновлення через `-u hr_hospital` і може бути продемонстрований через:
+
+- роботу з лікарями
+- роботу з пацієнтами
+- життєвий цикл візитів
+- виконання wizard
+- друк звіту по лікарю
