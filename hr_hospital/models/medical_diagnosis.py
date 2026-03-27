@@ -6,6 +6,8 @@ from odoo.exceptions import UserError, ValidationError
 
 
 class HrHospitalMedicalDiagnosis(models.Model):
+    """Diagnosis record linked to a completed recent patient visit."""
+
     _name = "hr.hospital.medical.diagnosis"
     _description = "Diagnosis"
     _order = "id desc"
@@ -103,6 +105,7 @@ class HrHospitalMedicalDiagnosis(models.Model):
     # -------------------------
     @api.constrains("visit_id")
     def _check_visit_is_recent_and_done(self):
+        """Allow diagnoses only for completed visits from the last 30 days."""
         if self.env.context.get("install_mode"):
             return
 
@@ -123,6 +126,7 @@ class HrHospitalMedicalDiagnosis(models.Model):
     # HELPERS
     # -------------------------
     def _current_doctor(self):
+        """Return the doctor profile linked to the current system user."""
         return self.env["hr.hospital.doctor"].search(
             [("user_id", "=", self.env.user.id)],
             limit=1,
@@ -170,6 +174,7 @@ class HrHospitalMedicalDiagnosis(models.Model):
             )
 
     def action_unapprove(self):
+        """Reset diagnosis approval data."""
         cur_doc = self._current_doctor()
         if not cur_doc:
             raise UserError("Only a doctor (linked to a system user) can unapprove diagnoses.")

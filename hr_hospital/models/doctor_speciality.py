@@ -3,6 +3,8 @@ from odoo import api, fields, models
 
 
 class HrHospitalDoctorSpeciality(models.Model):
+    """Reference dictionary for doctor specialities."""
+
     _name = "hr.hospital.doctor.speciality"
     _description = "Doctor Speciality"
     _order = "name"
@@ -34,5 +36,6 @@ class HrHospitalDoctorSpeciality(models.Model):
 
     @api.depends("doctor_ids")
     def _compute_doctor_count(self):
+        """Count doctors assigned to each speciality."""
         for rec in self:
             rec.doctor_count = len(rec.doctor_ids)

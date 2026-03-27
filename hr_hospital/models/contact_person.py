@@ -3,6 +3,8 @@ from odoo import fields, models
 
 
 class HrHospitalContactPerson(models.Model):
+    """Emergency or family contact linked to a patient."""
+
     _name = "hr.hospital.contact.person"
     _description = "Contact Person"
     _inherit = ["abstract.person"]

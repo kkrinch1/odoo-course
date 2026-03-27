@@ -10,7 +10,9 @@
     "depends": ["base", "hr", "mail"],
     "data": [
         # Security
+        "security/hr_hospital_groups.xml",
         "security/ir.model.access.csv",
+        "security/hr_hospital_visit_rules.xml",
 
         # Base/reference models first
         "views/doctor_speciality_views.xml",

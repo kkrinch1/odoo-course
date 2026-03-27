@@ -3,6 +3,8 @@ from odoo import fields, models
 
 
 class HrHospitalDoctorSchedule(models.Model):
+    """Doctor working time and absence slots used for scheduling checks."""
+
     _name = "hr.hospital.doctor.schedule"
     _description = "Doctor Schedule"
     _order = "doctor_id, date, day_of_week, start_time"

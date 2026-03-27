@@ -91,6 +91,7 @@
                         </group>
 
                         <group string="Contacts">
+                            <field name="user_id"/>
                             <field name="phone"/>
                             <field name="email"/>
                             <field name="citizenship_country_id"/>

@@ -11,6 +11,8 @@ _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
 class AbstractPerson(models.AbstractModel):
+    """Shared personal data and validations for hospital-related people."""
+
     _name = "abstract.person"
     _description = "Abstract Person"
     _inherit = ["image.mixin"]
@@ -45,12 +47,14 @@ class AbstractPerson(models.AbstractModel):
     # -------------------------
     @api.depends("last_name", "first_name", "middle_name")
     def _compute_full_name(self):
+        """Build a display-ready full name from the name parts."""
         for rec in self:
             parts = [rec.last_name, rec.first_name, rec.middle_name]
             rec.full_name = " ".join([p.strip() for p in parts if p and p.strip()]) or "No Name"
 
     @api.depends("birth_date")
     def _compute_age(self):
+        """Compute age in full years based on the birth date."""
         today = fields.Date.context_today(self)
         for rec in self:
             if rec.birth_date:
@@ -133,18 +137,21 @@ class AbstractPerson(models.AbstractModel):
     # -------------------------
     @api.constrains("phone")
     def _check_phone_format(self):
+        """Reject phone numbers that do not match the accepted pattern."""
         for rec in self:
             if rec.phone and not _PHONE_RE.match(rec.phone.strip()):
                 raise ValidationError("Invalid phone format.")
 
     @api.constrains("email")
     def _check_email_format(self):
+        """Reject email addresses that do not match the accepted pattern."""
         for rec in self:
             if rec.email and not _EMAIL_RE.match(rec.email.strip()):
                 raise ValidationError("Invalid email format.")
 
     @api.constrains("birth_date")
     def _check_birth_date(self):
+        """Ensure the birth date is in the past."""
         today = fields.Date.context_today(self)
         for rec in self:
             if rec.birth_date and rec.birth_date >= today:

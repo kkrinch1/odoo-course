@@ -4,6 +4,8 @@ from odoo.exceptions import ValidationError
 
 
 class HrHospitalPatientDoctorHistory(models.Model):
+    """History of primary doctor assignments for a patient."""
+
     _name = "patient.doctor.history"
     _description = "Primary Doctor History"
     _order = "assign_date desc, id desc"
@@ -36,6 +38,7 @@ class HrHospitalPatientDoctorHistory(models.Model):
 
     @api.constrains("assign_date", "change_date")
     def _check_dates(self):
+        """Ensure the change date is not earlier than the assignment date."""
         for rec in self:
             if rec.assign_date and rec.change_date and rec.change_date < rec.assign_date:
                 raise ValidationError("Change date cannot be earlier than assign date.")
@@ -45,6 +48,7 @@ class HrHospitalPatientDoctorHistory(models.Model):
     # -------------------------
     @api.model_create_multi
     def create(self, vals_list):
+        """Create a new history line and close the previous active one."""
         # For each new history line:
         # - deactivate previous active history line for that patient
         # - fill change_date on the previous line

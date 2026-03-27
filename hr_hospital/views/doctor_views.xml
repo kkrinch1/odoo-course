@@ -106,7 +106,7 @@
                             </div>
 
                             <footer class="mt-3 d-flex align-items-center">
-                                <a type="open" class="btn btn-secondary btn-sm">Open</a>
+                                <a type="open" role="button" class="btn btn-secondary btn-sm">Open</a>
                                 <button type="object"
                                         name="action_create_visit"
                                         class="btn btn-primary btn-sm ms-2">

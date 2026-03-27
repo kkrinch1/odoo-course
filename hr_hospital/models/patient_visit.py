@@ -8,6 +8,8 @@ from odoo.exceptions import ValidationError
 
 
 class HrHospitalPatientVisit(models.Model):
+    """Operational patient visit model with scheduling and state transitions."""
+
     _name = "hr.hospital.patient.visit"
     _description = "Patient Visits"
     _rec_name = "name"
@@ -128,6 +130,7 @@ class HrHospitalPatientVisit(models.Model):
     # -------------------------
     @api.depends("patient_id", "doctor_id", "planned_date")
     def _compute_name(self):
+        """Build a readable visit name from patient, doctor, and date."""
         for rec in self:
             patient = rec.patient_id.display_name or ""
             doctor = rec.doctor_id.display_name or ""
@@ -140,11 +143,13 @@ class HrHospitalPatientVisit(models.Model):
 
     @api.depends("diagnoses_ids")
     def _compute_diagnosis_count(self):
+        """Count diagnosis lines attached to the visit."""
         for rec in self:
             rec.diagnosis_count = len(rec.diagnoses_ids)
 
     @api.depends("speciality_id", "planned_date")
     def _compute_available_doctor_ids(self):
+        """Compute doctors available for the selected speciality and time slot."""
         Doctor = self.env["hr.hospital.doctor"]
         Schedule = self.env["hr.hospital.doctor.schedule"]
 
@@ -207,6 +212,7 @@ class HrHospitalPatientVisit(models.Model):
     # -------------------------
     @api.onchange("patient_id")
     def _onchange_patient_allergies_warning(self):
+        """Warn the user when the selected patient has allergies."""
         for rec in self:
             if rec.patient_id and rec.patient_id.allergies:
                 return {
@@ -246,15 +252,19 @@ class HrHospitalPatientVisit(models.Model):
     # BUTTONS
     # -------------------------
     def action_set_planned(self):
+        """Return the visit to the planned state."""
         self.write({"state": "planned", "action_date": False})
 
     def action_set_no_show(self):
+        """Mark the visit as missed by the patient."""
         self.write({"state": "no_show", "action_date": False})
 
     def action_set_cancelled(self):
+        """Mark the visit as cancelled."""
         self.write({"state": "cancelled", "action_date": False})
 
     def action_set_done(self):
+        """Complete the visit and stamp the actual execution time."""
         for rec in self:
             rec.write({"state": "done", "action_date": fields.Datetime.now()})
 
@@ -263,12 +273,14 @@ class HrHospitalPatientVisit(models.Model):
     # -------------------------
     @api.constrains("doctor_id")
     def _check_doctor_has_license(self):
+        """Require a doctor license before a visit can be assigned."""
         for rec in self:
             if rec.doctor_id and not rec.doctor_id.license_number:
                 raise ValidationError("You cannot assign a doctor without a license number.")
 
     @api.constrains("action_date", "state")
     def _check_action_date_done(self):
+        """Allow actual execution time only on completed visits."""
         for rec in self:
             if rec.action_date and rec.state != "done":
                 raise ValidationError("Actual date/time can be set only for a completed visit.")
@@ -276,6 +288,7 @@ class HrHospitalPatientVisit(models.Model):
     # ✅ ТЗ: action_date не раньше planned_date (трактуем “дослідження/візит”)
     @api.constrains("planned_date", "action_date", "state")
     def _check_action_date_not_before_planned_date(self):
+        """Ensure the actual execution time is not earlier than the planned time."""
         for rec in self:
             if rec.state != "done":
                 continue
@@ -285,6 +298,7 @@ class HrHospitalPatientVisit(models.Model):
     # ✅ 8.2 + безопасность: нельзя записать если доктор не работает / выходной / отпуск
     @api.constrains("doctor_id", "planned_date")
     def _check_doctor_available_by_schedule(self):
+        """Validate visit scheduling against doctor work and absence slots."""
         Schedule = self.env["hr.hospital.doctor.schedule"]
 
         for rec in self:
@@ -319,6 +333,7 @@ class HrHospitalPatientVisit(models.Model):
 
     @api.constrains("patient_id", "doctor_id", "planned_date", "state")
     def _check_one_visit_per_day(self):
+        """Forbid multiple non-cancelled visits per patient and doctor per day."""
         for rec in self:
             if not rec.patient_id or not rec.doctor_id or not rec.planned_date:
                 continue
@@ -343,6 +358,7 @@ class HrHospitalPatientVisit(models.Model):
                 raise ValidationError("The patient cannot be scheduled with this doctor more than once per day.")
 
     def action_open_pivot_current_month(self):
+        """Open the pivot view filtered to the current month."""
         today = fields.Date.context_today(self)
         start = today.replace(day=1)
         end = start + relativedelta(months=1)
@@ -365,6 +381,7 @@ class HrHospitalPatientVisit(models.Model):
     # OVERRIDES
     # -------------------------
     def write(self, vals):
+        """Protect archived and already performed visits from unsafe changes."""
         # 1️⃣ Запрет архивирования если есть диагнозы
         if vals.get("active") is False:
             visits_with_diagnosis = self.filtered(lambda v: v.diagnoses_ids)
@@ -385,6 +402,7 @@ class HrHospitalPatientVisit(models.Model):
         return super().write(vals)
 
     def unlink(self):
+        """Prevent deletion of visits that already contain diagnoses."""
         for rec in self:
             if rec.diagnoses_ids:
                 raise ValidationError("You cannot delete a visit that has diagnoses.")

@@ -4,6 +4,8 @@ from odoo.exceptions import ValidationError
 
 
 class HrHospitalDoctor(models.Model):
+    """Doctor profile with speciality, mentoring, schedule, and report helpers."""
+
     _name = "hr.hospital.doctor"
     _description = "Doctor"
     _inherit = ["abstract.person"]
@@ -78,6 +80,7 @@ class HrHospitalDoctor(models.Model):
     # -------------------------
     @api.depends("license_issue_date")
     def _compute_experience_years(self):
+        """Compute the work experience from the license issue date."""
         today = fields.Date.context_today(self)
         for doctor in self:
             if doctor.license_issue_date:
@@ -91,6 +94,7 @@ class HrHospitalDoctor(models.Model):
 
     @api.depends("intern_ids.full_name")
     def _compute_intern_names(self):
+        """Expose intern names as a comma-separated helper for kanban/report usage."""
         for doctor in self:
             doctor.intern_names = ", ".join(doctor.intern_ids.mapped("full_name"))
 
@@ -99,6 +103,7 @@ class HrHospitalDoctor(models.Model):
     # -------------------------
     @api.constrains("mentor_id", "is_intern")
     def _check_mentor_rules(self):
+        """Validate mentor and intern relationships."""
         for doc in self:
             if doc.mentor_id:
                 if doc.mentor_id.id == doc.id:
@@ -115,6 +120,7 @@ class HrHospitalDoctor(models.Model):
     # -------------------------
     @api.onchange("is_intern")
     def _onchange_is_intern(self):
+        """Clear or suggest a mentor when the intern flag changes."""
         for doc in self:
             if not doc.is_intern:
                 doc.mentor_id = False
@@ -129,6 +135,7 @@ class HrHospitalDoctor(models.Model):
     # ARCHIVE RULE
     # -------------------------
     def write(self, vals):
+        """Prevent archiving doctors that still have planned visits."""
         if vals.get("active") is False:
             Visit = self.env["hr.hospital.patient.visit"]
             for doc in self:
@@ -146,6 +153,7 @@ class HrHospitalDoctor(models.Model):
     # ACTIONS
     # -------------------------
     def action_create_visit(self):
+        """Open a prefilled visit form for the current doctor."""
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -160,10 +168,12 @@ class HrHospitalDoctor(models.Model):
         }
 
     def _get_report_base_filename(self):
+        """Return a stable base filename for the doctor PDF report."""
         self.ensure_one()
         return f"doctor_report_{self.id}"
 
     def _get_report_visits(self):
+        """Return doctor visits sorted in reverse chronological order."""
         self.ensure_one()
         return self.visit_ids.sorted(
             key=lambda visit: (visit.planned_date or fields.Datetime.now(), visit.id),
@@ -171,10 +181,12 @@ class HrHospitalDoctor(models.Model):
         )
 
     def _get_report_print_datetime(self):
+        """Provide the current timestamp for report footer output."""
         self.ensure_one()
         return fields.Datetime.now()
 
     def _format_report_datetime(self, value):
+        """Format a datetime value in the user's timezone for report output."""
         self.ensure_one()
         if not value:
             return ""
@@ -182,22 +194,26 @@ class HrHospitalDoctor(models.Model):
         return dt_local.strftime("%Y-%m-%d %H:%M")
 
     def _format_report_date(self, value):
+        """Format a date value for report output."""
         self.ensure_one()
         if not value:
             return ""
         return fields.Date.to_string(value)
 
     def _get_visit_type_label(self, visit):
+        """Resolve a visit type selection value to its display label."""
         self.ensure_one()
         return dict(visit._fields["visit_type"].selection).get(
             visit.visit_type, visit.visit_type
         )
 
     def _get_visit_state_label(self, visit):
+        """Resolve a visit state selection value to its display label."""
         self.ensure_one()
         return dict(visit._fields["state"].selection).get(visit.state, visit.state)
 
     def _get_report_patient_rows(self):
+        """Build unique patient rows with the latest status for the report table."""
         self.ensure_one()
         rows = []
         seen_patient_ids = set()
@@ -227,6 +243,7 @@ class HrHospitalDoctor(models.Model):
     # DISPLAY NAME
     # -------------------------
     def name_get(self):
+        """Include the speciality in the display name when it is available."""
         res = []
         for doc in self:
             spec = doc.speciality_id.name if doc.speciality_id else ""

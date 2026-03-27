@@ -3,9 +3,13 @@ from odoo import api, fields, models
 
 
 class HrHospitalPatient(models.Model):
+    """Patient profile with insurance, doctor history, and visit actions."""
+
     _name = "hr.hospital.patient"
     _description = "Patient"
     _inherit = ["abstract.person"]
+
+    user_id = fields.Many2one("res.users", string="System User")
 
     personal_doctor_id = fields.Many2one(
         "hr.hospital.doctor",
@@ -66,6 +70,7 @@ class HrHospitalPatient(models.Model):
     # -------------------------
     @api.depends("visit_ids")
     def _compute_visit_count(self):
+        """Count visits linked to the patient."""
         for rec in self:
             rec.visit_count = len(rec.visit_ids)
 
@@ -74,6 +79,7 @@ class HrHospitalPatient(models.Model):
     # -------------------------
     @api.model_create_multi
     def create(self, vals_list):
+        """Create patients and initialize doctor history when needed."""
         patients = super().create(vals_list)
         for patient, vals in zip(patients, vals_list):
             doctor_id = vals.get("personal_doctor_id")
@@ -86,6 +92,7 @@ class HrHospitalPatient(models.Model):
         return patients
 
     def write(self, vals):
+        """Track primary doctor changes in the history model."""
         # detect changes before write
         to_track = {}
         if "personal_doctor_id" in vals:
@@ -110,6 +117,7 @@ class HrHospitalPatient(models.Model):
     # HELPERS
     # -------------------------
     def _create_doctor_history(self, new_doctor_id, reason=None, change_date=None):
+        """Create a new primary doctor history entry for the patient."""
         self.ensure_one()
         self.env["patient.doctor.history"].create(
             {
@@ -124,6 +132,7 @@ class HrHospitalPatient(models.Model):
     # ACTIONS
     # -------------------------
     def action_open_export_card_wizard(self):
+        """Open the patient card export wizard."""
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -137,6 +146,7 @@ class HrHospitalPatient(models.Model):
         }
 
     def action_open_patient_visits(self):
+        """Open the list of visits for the current patient."""
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
@@ -150,6 +160,7 @@ class HrHospitalPatient(models.Model):
         }
 
     def action_create_visit(self):
+        """Open a prefilled visit form for the current patient."""
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",

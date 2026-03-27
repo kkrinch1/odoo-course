@@ -6,6 +6,8 @@ from odoo.exceptions import ValidationError
 
 
 class HrHospitalDisease(models.Model):
+    """Hierarchical disease classifier with ICD-10 normalization and validation."""
+
     _name = "hr.hospital.disease"
     _description = "Disease"
     _order = "name"
@@ -74,12 +76,14 @@ class HrHospitalDisease(models.Model):
     # ------------------------------------------------------------
     @api.model_create_multi
     def create(self, vals_list):
+        """Normalize ICD-10 codes before creating disease records."""
         for vals in vals_list:
             if "icd10_code" in vals:
                 vals["icd10_code"] = self._normalize_icd10(vals.get("icd10_code"))
         return super().create(vals_list)
 
     def write(self, vals):
+        """Normalize ICD-10 codes before updating disease records."""
         if "icd10_code" in vals:
             vals["icd10_code"] = self._normalize_icd10(vals.get("icd10_code"))
         return super().write(vals)
@@ -94,6 +98,7 @@ class HrHospitalDisease(models.Model):
     # ------------------------------------------------------------
     @api.constrains("icd10_code")
     def _check_icd10_code(self):
+        """Validate the ICD-10 code format."""
         pattern = re.compile(r"^[A-Z0-9.\-]{1,10}$")
         for rec in self:
             if not rec.icd10_code:
