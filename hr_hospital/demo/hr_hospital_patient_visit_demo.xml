@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- 2026-02-16 (Mon) -->
+        <record id="visit_01" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_01"/>
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="speciality_id" ref="spec_ther"/>
+            <field name="planned_date">2026-02-16 09:30:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_02" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_02"/>
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="speciality_id" ref="spec_card"/>
+            <field name="planned_date">2026-02-16 10:30:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-16 11:00:00</field>
+        </record>
+
+        <record id="visit_03" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_03"/>
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="speciality_id" ref="spec_neur"/>
+            <field name="planned_date">2026-02-16 11:30:00</field>
+            <field name="visit_type">preventive</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_04" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_04"/>
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="speciality_id" ref="spec_ped"/>
+            <field name="planned_date">2026-02-16 14:00:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">cancelled</field>
+        </record>
+
+        <record id="visit_05" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_05"/>
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="speciality_id" ref="spec_surg"/>
+            <field name="planned_date">2026-02-16 15:00:00</field>
+            <field name="visit_type">emergency</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-16 15:45:00</field>
+        </record>
+
+        <!-- 2026-02-17 (Tue) -->
+        <record id="visit_06" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_06"/>
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="speciality_id" ref="spec_ther"/>
+            <field name="planned_date">2026-02-17 09:30:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_07" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_07"/>
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="speciality_id" ref="spec_card"/>
+            <field name="planned_date">2026-02-17 10:30:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_08" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_08"/>
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="speciality_id" ref="spec_neur"/>
+            <field name="planned_date">2026-02-17 11:30:00</field>
+            <field name="visit_type">preventive</field>
+            <field name="state">no_show</field>
+        </record>
+
+        <record id="visit_09" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_09"/>
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="speciality_id" ref="spec_ther"/>
+            <field name="planned_date">2026-02-17 14:00:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-17 14:40:00</field>
+        </record>
+
+        <record id="visit_10" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_10"/>
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="speciality_id" ref="spec_card"/>
+            <field name="planned_date">2026-02-17 15:00:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">cancelled</field>
+        </record>
+
+        <!-- 2026-02-18 (Wed) -->
+        <record id="visit_11" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_11"/>
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="speciality_id" ref="spec_neur"/>
+            <field name="planned_date">2026-02-18 09:30:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_12" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_12"/>
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="speciality_id" ref="spec_ped"/>
+            <field name="planned_date">2026-02-18 10:30:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-18 11:10:00</field>
+        </record>
+
+        <record id="visit_13" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_13"/>
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="speciality_id" ref="spec_surg"/>
+            <field name="planned_date">2026-02-18 11:30:00</field>
+            <field name="visit_type">emergency</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_14" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_14"/>
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="speciality_id" ref="spec_ther"/>
+            <field name="planned_date">2026-02-18 14:00:00</field>
+            <field name="visit_type">preventive</field>
+            <field name="state">no_show</field>
+        </record>
+
+        <record id="visit_15" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_15"/>
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="speciality_id" ref="spec_card"/>
+            <field name="planned_date">2026-02-18 15:00:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-18 15:30:00</field>
+            <field name="currency_id" ref="base.USD"/>
+            <field name="cost">150.00</field>
+
+            <field name="recommendation"><![CDATA[
+             <ul>
+             <li>Rest and hydration for 48 hours.</li>
+            <li>Avoid heavy physical activity for 3 days.</li>
+             <li>Follow-up visit in 7 days.</li>
+               </ul>
+                ]]></field>
+                </record>
+
+        <!-- 2026-02-19 (Thu) -->
+        <record id="visit_16" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_01"/>
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="speciality_id" ref="spec_neur"/>
+            <field name="planned_date">2026-02-19 09:30:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">planned</field>
+            <field name="recommendation"><![CDATA[
+             <ul>
+             <li>Rest and hydration for 48 hours.</li>
+            <li>Avoid heavy physical activity for 3 days.</li>
+             <li>Follow-up visit in 7 days.</li>
+               </ul>
+                ]]></field>
+                </record>
+
+        <record id="visit_17" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_02"/>
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="speciality_id" ref="spec_ther"/>
+            <field name="planned_date">2026-02-19 10:30:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">cancelled</field>
+        </record>
+
+        <record id="visit_18" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_03"/>
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="speciality_id" ref="spec_card"/>
+            <field name="planned_date">2026-02-19 11:30:00</field>
+            <field name="visit_type">preventive</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_19" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_04"/>
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="speciality_id" ref="spec_neur"/>
+            <field name="planned_date">2026-02-19 14:00:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-19 14:35:00</field>
+        </record>
+
+        <record id="visit_20" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_05"/>
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="speciality_id" ref="spec_ped"/>
+            <field name="planned_date">2026-02-19 15:00:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">no_show</field>
+        </record>
+
+        <!-- 2026-02-20 (Fri) -->
+        <record id="visit_21" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_06"/>
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="speciality_id" ref="spec_surg"/>
+            <field name="planned_date">2026-02-20 09:30:00</field>
+            <field name="visit_type">preventive</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_22" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_07"/>
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="speciality_id" ref="spec_ther"/>
+            <field name="planned_date">2026-02-20 10:30:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-20 11:05:00</field>
+        </record>
+
+        <record id="visit_23" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_08"/>
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="speciality_id" ref="spec_card"/>
+            <field name="planned_date">2026-02-20 11:30:00</field>
+            <field name="visit_type">repeat</field>
+            <field name="state">planned</field>
+        </record>
+
+        <record id="visit_24" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_09"/>
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="speciality_id" ref="spec_neur"/>
+            <field name="planned_date">2026-02-20 14:00:00</field>
+            <field name="visit_type">emergency</field>
+            <field name="state">done</field>
+            <field name="action_date">2026-02-20 14:50:00</field>
+        </record>
+
+        <record id="visit_25" model="hr.hospital.patient.visit">
+            <field name="patient_id" ref="patient_10"/>
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="speciality_id" ref="spec_ther"/>
+            <field name="planned_date">2026-02-20 15:00:00</field>
+            <field name="visit_type">initial</field>
+            <field name="state">planned</field>
+        </record>
+
+    </data>
+</odoo>

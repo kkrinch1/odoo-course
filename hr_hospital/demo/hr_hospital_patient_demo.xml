@@ -1,20 +1,293 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <odoo>
-    <record id="patient_1" model="hr.hospital.patient">
-        <field name="name">John Smith</field>
-        <field name="doctor_id" ref="hr_hospital.doctor_2"/>
-        <field name="disease_ids" eval="[(4, ref('hr_hospital.disease_flu'))]"/>
-    </record>
-
-    <record id="patient_2" model="hr.hospital.patient">
-        <field name="name">Emma Johnson</field>
-        <field name="doctor_id" ref="hr_hospital.doctor_3"/>
-        <field name="disease_ids" eval="[(4, ref('hr_hospital.disease_migraine'))]"/>
-    </record>
-
-    <record id="patient_3" model="hr.hospital.patient">
-        <field name="name">Liam Brown</field>
-        <field name="doctor_id" ref="hr_hospital.doctor_2"/>
-        <field name="disease_ids" eval="[(4, ref('hr_hospital.disease_hypertension'))]"/>
-    </record>
+    <data>
+        <record id="insurance_co_01" model="res.partner">
+            <field name="name">BlueShield Insurance</field>
+            <field name="company_type">company</field>
+            <field name="email">contact@blueshield.example.com</field>
+            <field name="country_id" ref="base.us" />
+        </record>
+        <record id="insurance_co_02" model="res.partner">
+            <field name="name">Unipol Insurance</field>
+            <field name="company_type">company</field>
+            <field name="email">info@unipol.example.com</field>
+            <field name="country_id" ref="base.it" />
+        </record>
+        <record id="insurance_co_03" model="res.partner">
+            <field name="name">Allianz Deutschland</field>
+            <field name="company_type">company</field>
+            <field name="email">info@allianz-de.example.com</field>
+            <field name="country_id" ref="base.de" />
+        </record>
+        <record id="patient_01" model="hr.hospital.patient">
+            <field name="last_name">Doe</field>
+            <field name="first_name">John</field>
+            <field name="middle_name">Michael</field>
+            <field name="sex">male</field>
+            <field name="birth_date">1996-05-12</field>
+            <field name="phone">+1 555 3001</field>
+            <field name="email">john.doe@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">Peanuts</field>
+            <field name="passport_data">AA00000001</field>
+            <field name="blood_group">a_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000001</field>
+            <field name="personal_doctor_id" ref="doctor_08_intern" />
+            <field name="contact_person_id" ref="cp_01" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_02" model="hr.hospital.patient">
+            <field name="last_name">Doe</field>
+            <field name="first_name">Emily</field>
+            <field name="middle_name">Rose</field>
+            <field name="sex">female</field>
+            <field name="birth_date">2001-09-03</field>
+            <field name="phone">+1 555 3002</field>
+            <field name="email">emily.doe@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">Penicillin</field>
+            <field name="passport_data">AA00000002</field>
+            <field name="blood_group">o_neg</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000002</field>
+            <field name="personal_doctor_id" ref="doctor_01" />
+            <field name="contact_person_id" ref="cp_02" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_03" model="hr.hospital.patient">
+            <field name="last_name">Brown</field>
+            <field name="first_name">Olivia</field>
+            <field name="middle_name">Grace</field>
+            <field name="sex">female</field>
+            <field name="birth_date">1994-02-21</field>
+            <field name="phone">+1 555 3003</field>
+            <field name="email">olivia.brown@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">Latex</field>
+            <field name="passport_data">AA00000003</field>
+            <field name="blood_group">ab_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000003</field>
+            <field name="personal_doctor_id" ref="doctor_02" />
+            <field name="contact_person_id" ref="cp_03" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_04" model="hr.hospital.patient">
+            <field name="last_name">Brown</field>
+            <field name="first_name">Ethan</field>
+            <field name="middle_name">Scott</field>
+            <field name="sex">male</field>
+            <field name="birth_date">1990-11-08</field>
+            <field name="phone">+1 555 3004</field>
+            <field name="email">ethan.brown@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">None</field>
+            <field name="passport_data">AA00000004</field>
+            <field name="blood_group">b_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000004</field>
+            <field name="personal_doctor_id" ref="doctor_03" />
+            <field name="contact_person_id" ref="cp_04" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_05" model="hr.hospital.patient">
+            <field name="last_name">Wilson</field>
+            <field name="first_name">Sophia</field>
+            <field name="middle_name">Jane</field>
+            <field name="sex">female</field>
+            <field name="birth_date">2006-06-17</field>
+            <field name="phone">+1 555 3005</field>
+            <field name="email">sophia.wilson@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">Strawberries</field>
+            <field name="passport_data">AA00000005</field>
+            <field name="blood_group">o_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000005</field>
+            <field name="personal_doctor_id" ref="doctor_04" />
+            <field name="contact_person_id" ref="cp_05" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_06" model="hr.hospital.patient">
+            <field name="last_name">Wilson</field>
+            <field name="first_name">Liam</field>
+            <field name="middle_name">Noah</field>
+            <field name="sex">male</field>
+            <field name="birth_date">2008-03-29</field>
+            <field name="phone">+1 555 3006</field>
+            <field name="email">liam.wilson@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">Dust mites</field>
+            <field name="passport_data">AA00000006</field>
+            <field name="blood_group">a_neg</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000006</field>
+            <field name="personal_doctor_id" ref="doctor_05" />
+            <field name="contact_person_id" ref="cp_06" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_07" model="hr.hospital.patient">
+            <field name="last_name">Taylor</field>
+            <field name="first_name">Mia</field>
+            <field name="middle_name">Louise</field>
+            <field name="sex">female</field>
+            <field name="birth_date">1989-01-05</field>
+            <field name="phone">+39 320 100 3007</field>
+            <field name="email">mia.taylor@example.com</field>
+            <field name="citizenship_country_id" ref="base.it" />
+            <field name="allergies">Shellfish</field>
+            <field name="passport_data">AA00000007</field>
+            <field name="blood_group">b_neg</field>
+            <field name="insurance_company_id" ref="insurance_co_02" />
+            <field name="policy_number">POL-000007</field>
+            <field name="personal_doctor_id" ref="doctor_06" />
+            <field name="contact_person_id" ref="cp_07" />
+            <field name="lang_id" search="[('code','=','it_IT')]" />
+        </record>
+        <record id="patient_08" model="hr.hospital.patient">
+            <field name="last_name">Taylor</field>
+            <field name="first_name">Noah</field>
+            <field name="middle_name">Andrew</field>
+            <field name="sex">male</field>
+            <field name="birth_date">1988-07-14</field>
+            <field name="phone">+39 320 100 3008</field>
+            <field name="email">noah.taylor@example.com</field>
+            <field name="citizenship_country_id" ref="base.it" />
+            <field name="allergies">Ibuprofen</field>
+            <field name="passport_data">AA00000008</field>
+            <field name="blood_group">ab_neg</field>
+            <field name="insurance_company_id" ref="insurance_co_02" />
+            <field name="policy_number">POL-000008</field>
+            <field name="personal_doctor_id" ref="doctor_07_intern" />
+            <field name="contact_person_id" ref="cp_08" />
+            <field name="lang_id" search="[('code','=','it_IT')]" />
+        </record>
+        <record id="patient_09" model="hr.hospital.patient">
+            <field name="last_name">Martin</field>
+            <field name="first_name">Emma</field>
+            <field name="middle_name">Claire</field>
+            <field name="sex">female</field>
+            <field name="birth_date">1979-12-02</field>
+            <field name="phone">+49 151 123 3009</field>
+            <field name="email">emma.martin@example.com</field>
+            <field name="citizenship_country_id" ref="base.de" />
+            <field name="allergies">Pollen</field>
+            <field name="passport_data">AA00000009</field>
+            <field name="blood_group">o_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_03" />
+            <field name="policy_number">POL-000009</field>
+            <field name="personal_doctor_id" ref="doctor_02" />
+            <field name="contact_person_id" ref="cp_09" />
+            <field name="lang_id" search="[('code','=','de_DE')]" />
+        </record>
+        <record id="patient_10" model="hr.hospital.patient">
+            <field name="last_name">Marten</field>
+            <field name="first_name">James</field>
+            <field name="middle_name">Henry</field>
+            <field name="sex">male</field>
+            <field name="birth_date">1976-05-19</field>
+            <field name="phone">+49 151 123 3010</field>
+            <field name="email">james.martin@example.com</field>
+            <field name="citizenship_country_id" ref="base.de" />
+            <field name="allergies">Aspirin</field>
+            <field name="passport_data">AA00000010</field>
+            <field name="blood_group">a_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_03" />
+            <field name="policy_number">POL-000010</field>
+            <field name="personal_doctor_id" ref="doctor_03" />
+            <field name="contact_person_id" ref="cp_10" />
+            <field name="lang_id" search="[('code','=','de_DE')]" />
+        </record>
+        <record id="patient_11" model="hr.hospital.patient">
+            <field name="last_name">Anderson</field>
+            <field name="first_name">Ava</field>
+            <field name="middle_name">Nicole</field>
+            <field name="sex">female</field>
+            <field name="birth_date">1998-10-10</field>
+            <field name="phone">+1 555 3011</field>
+            <field name="email">ava.anderson@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">Cats</field>
+            <field name="passport_data">AA00000011</field>
+            <field name="blood_group">b_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000011</field>
+            <field name="personal_doctor_id" ref="doctor_04" />
+            <field name="contact_person_id" ref="cp_11" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_12" model="hr.hospital.patient">
+            <field name="last_name">Anderson</field>
+            <field name="first_name">Benjamin</field>
+            <field name="middle_name">Paul</field>
+            <field name="sex">male</field>
+            <field name="birth_date">1993-08-27</field>
+            <field name="phone">+1 555 3012</field>
+            <field name="email">benjamin.anderson@example.com</field>
+            <field name="citizenship_country_id" ref="base.us" />
+            <field name="allergies">Bee stings</field>
+            <field name="passport_data">AA00000012</field>
+            <field name="blood_group">o_neg</field>
+            <field name="insurance_company_id" ref="insurance_co_01" />
+            <field name="policy_number">POL-000012</field>
+            <field name="personal_doctor_id" ref="doctor_05" />
+            <field name="contact_person_id" ref="cp_12" />
+            <field name="lang_id" search="[('code','=','en_US')]" />
+        </record>
+        <record id="patient_13" model="hr.hospital.patient">
+            <field name="last_name">Thomas</field>
+            <field name="first_name">Charlotte</field>
+            <field name="middle_name">Jane</field>
+            <field name="sex">female</field>
+            <field name="birth_date">1988-03-06</field>
+            <field name="phone">+44 7700 920 3013</field>
+            <field name="email">charlotte.thomas@example.com</field>
+            <field name="citizenship_country_id" ref="base.it" />
+            <field name="allergies">Milk protein</field>
+            <field name="passport_data">AA00000013</field>
+            <field name="blood_group">a_neg</field>
+            <field name="insurance_company_id" ref="insurance_co_02" />
+            <field name="policy_number">POL-000013</field>
+            <field name="personal_doctor_id" ref="doctor_06" />
+            <field name="contact_person_id" ref="cp_13" />
+            <field name="lang_id" search="[('code','=','it_IT')]" />
+        </record>
+        <record id="patient_14" model="hr.hospital.patient">
+            <field name="last_name">Thomas</field>
+            <field name="first_name">Lucas</field>
+            <field name="middle_name">Ryan</field>
+            <field name="sex">male</field>
+            <field name="birth_date">1987-01-22</field>
+            <field name="phone">+44 7700 920 3014</field>
+            <field name="email">lucas.thomas@example.com</field>
+            <field name="citizenship_country_id" ref="base.it" />
+            <field name="allergies">Gluten</field>
+            <field name="passport_data">AA00000014</field>
+            <field name="blood_group">ab_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_02" />
+            <field name="policy_number">POL-000014</field>
+            <field name="personal_doctor_id" ref="doctor_01" />
+            <field name="contact_person_id" ref="cp_14" />
+            <field name="lang_id" search="[('code','=','it_IT')]" />
+        </record>
+        <record id="patient_15" model="hr.hospital.patient">
+            <field name="last_name">Garcia</field>
+            <field name="first_name">Amelia</field>
+            <field name="middle_name">Sofia</field>
+            <field name="sex">female</field>
+            <field name="birth_date">1992-09-30</field>
+            <field name="phone">+34 600 100 3015</field>
+            <field name="email">amelia.garcia@example.com</field>
+            <field name="citizenship_country_id" ref="base.es" />
+            <field name="allergies">Contrast agents (iodine)</field>
+            <field name="passport_data">AA00000015</field>
+            <field name="blood_group">o_pos</field>
+            <field name="insurance_company_id" ref="insurance_co_03" />
+            <field name="policy_number">POL-000015</field>
+            <field name="personal_doctor_id" ref="doctor_08_intern" />
+            <field name="contact_person_id" ref="cp_15" />
+            <field name="lang_id" search="[('code','=','es_ES')]" />
+        </record>
+    </data>
 </odoo>

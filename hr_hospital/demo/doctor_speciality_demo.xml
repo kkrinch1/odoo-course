@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="spec_ther" model="hr.hospital.doctor.speciality">
+            <field name="name">Therapist</field>
+            <field name="code">THER</field>
+            <field name="description">General practitioner / internal medicine.</field>
+            <field name="active">1</field>
+        </record>
+
+        <record id="spec_card" model="hr.hospital.doctor.speciality">
+            <field name="name">Cardiologist</field>
+            <field name="code">CARD</field>
+            <field name="description">Heart and vascular system.</field>
+            <field name="active">1</field>
+        </record>
+
+        <record id="spec_neur" model="hr.hospital.doctor.speciality">
+            <field name="name">Neurologist</field>
+            <field name="code">NEUR</field>
+            <field name="description">Nervous system disorders.</field>
+            <field name="active">1</field>
+        </record>
+
+        <record id="spec_ped" model="hr.hospital.doctor.speciality">
+            <field name="name">Pediatrician</field>
+            <field name="code">PED</field>
+            <field name="description">Children health care.</field>
+            <field name="active">1</field>
+        </record>
+
+        <record id="spec_surg" model="hr.hospital.doctor.speciality">
+            <field name="name">Surgeon</field>
+            <field name="code">SURG</field>
+            <field name="description">Surgical treatment.</field>
+            <field name="active">1</field>
+        </record>
+
+    </data>
+</odoo>

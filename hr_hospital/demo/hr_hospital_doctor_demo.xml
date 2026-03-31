@@ -1,16 +1,245 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="doctor_1" model="hr.hospital.doctor">
-        <field name="name">Dr. Alice Green</field>
-    </record>
+    <data>
 
-    <record id="doctor_2" model="hr.hospital.doctor">
-        <field name="name">Dr. Bob White</field>
-        <field name="supervising_doctor_id" ref="doctor_1"/>
-    </record>
+        <!-- ===== Users (8) ===== -->
+        <record id="user_doctor_01" model="res.users">
+            <field name="name">Alice Morgan</field>
+            <field name="login">doctor01</field>
+            <field name="email">doctor01@example.com</field>
+        </record>
 
-    <record id="doctor_3" model="hr.hospital.doctor">
-        <field name="name">Dr. Carol Black</field>
-        <field name="supervising_doctor_id" ref="doctor_1"/>
-    </record>
+        <record id="user_doctor_02" model="res.users">
+            <field name="name">Bob Stone</field>
+            <field name="login">doctor02</field>
+            <field name="email">doctor02@example.com</field>
+        </record>
+
+        <record id="user_doctor_03" model="res.users">
+            <field name="name">Carol Reed</field>
+            <field name="login">doctor03</field>
+            <field name="email">doctor03@example.com</field>
+        </record>
+
+        <record id="user_doctor_04" model="res.users">
+            <field name="name">Daniel Fox</field>
+            <field name="login">doctor04</field>
+            <field name="email">doctor04@example.com</field>
+        </record>
+
+        <record id="user_doctor_05" model="res.users">
+            <field name="name">Eva Clark</field>
+            <field name="login">doctor05</field>
+            <field name="email">doctor05@example.com</field>
+        </record>
+
+        <record id="user_doctor_06" model="res.users">
+            <field name="name">Frank Hill</field>
+            <field name="login">doctor06</field>
+            <field name="email">doctor06@example.com</field>
+        </record>
+
+        <record id="user_intern_01" model="res.users">
+            <field name="name">Grace Lee</field>
+            <field name="login">intern01</field>
+            <field name="email">intern01@example.com</field>
+        </record>
+
+        <record id="user_intern_02" model="res.users">
+            <field name="name">Henry King</field>
+            <field name="login">intern02</field>
+            <field name="email">intern02@example.com</field>
+        </record>
+
+
+        <!-- ===== Doctors (6) ===== -->
+        <record id="doctor_01" model="hr.hospital.doctor">
+            <field name="last_name">Morgan</field>
+            <field name="first_name">Alice</field>
+            <field name="middle_name">Jane</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_doctor_01"/>
+            <field name="speciality_id" ref="spec_ther"/>
+
+            <field name="birth_date">1987-03-14</field>
+            <field name="sex">female</field>
+            <field name="phone">+1 555 0101</field>
+            <field name="email">alice.morgan@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.us"/>
+            <field name="study_country_id" ref="base.us"/>
+
+            <field name="is_intern">0</field>
+            <field name="license_number">LIC-0001</field>
+            <field name="license_issue_date">2012-06-01</field>
+            <field name="rating">4.70</field>
+        </record>
+
+        <record id="doctor_02" model="hr.hospital.doctor">
+            <field name="last_name">Stone</field>
+            <field name="first_name">Bob</field>
+            <field name="middle_name">Michael</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_doctor_02"/>
+            <field name="speciality_id" ref="spec_card"/>
+
+            <field name="birth_date">1981-09-22</field>
+            <field name="sex">male</field>
+            <field name="phone">+1 555 0102</field>
+            <field name="email">bob.stone@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.us"/>
+            <field name="study_country_id" ref="base.de"/>
+
+            <field name="is_intern">0</field>
+            <field name="license_number">LIC-0002</field>
+            <field name="license_issue_date">2009-04-10</field>
+            <field name="rating">4.30</field>
+        </record>
+
+        <record id="doctor_03" model="hr.hospital.doctor">
+            <field name="last_name">Reed</field>
+            <field name="first_name">Carol</field>
+            <field name="middle_name">Anne</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_doctor_03"/>
+            <field name="speciality_id" ref="spec_neur"/>
+
+            <field name="birth_date">1979-12-05</field>
+            <field name="sex">female</field>
+            <field name="phone">+49 151 555 0103</field>
+            <field name="email">carol.reed@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.de"/>
+            <field name="study_country_id" ref="base.de"/>
+
+            <field name="is_intern">0</field>
+            <field name="license_number">LIC-0003</field>
+            <field name="license_issue_date">2006-09-15</field>
+            <field name="rating">4.90</field>
+        </record>
+
+        <record id="doctor_04" model="hr.hospital.doctor">
+            <field name="last_name">Fox</field>
+            <field name="first_name">Daniel</field>
+            <field name="middle_name">Robert</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_doctor_04"/>
+            <field name="speciality_id" ref="spec_ped"/>
+
+            <field name="birth_date">1985-01-18</field>
+            <field name="sex">male</field>
+            <field name="phone">+39 320 555 0104</field>
+            <field name="email">daniel.fox@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.it"/>
+            <field name="study_country_id" ref="base.it"/>
+
+            <field name="is_intern">0</field>
+            <field name="license_number">LIC-0004</field>
+            <field name="license_issue_date">2011-02-20</field>
+            <field name="rating">3.95</field>
+        </record>
+
+        <record id="doctor_05" model="hr.hospital.doctor">
+            <field name="last_name">Clark</field>
+            <field name="first_name">Eva</field>
+            <field name="middle_name">Sofia</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_doctor_05"/>
+            <field name="speciality_id" ref="spec_surg"/>
+
+            <field name="birth_date">1983-07-30</field>
+            <field name="sex">female</field>
+            <field name="phone">+34 600 555 0105</field>
+            <field name="email">eva.clark@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.es"/>
+            <field name="study_country_id" ref="base.it"/>
+
+            <field name="is_intern">0</field>
+            <field name="license_number">LIC-0005</field>
+            <field name="license_issue_date">2010-10-01</field>
+            <field name="rating">4.15</field>
+        </record>
+
+        <record id="doctor_06" model="hr.hospital.doctor">
+            <field name="last_name">Hill</field>
+            <field name="first_name">Frank</field>
+            <field name="middle_name">Edward</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_doctor_06"/>
+            <field name="speciality_id" ref="spec_ther"/>
+
+            <field name="birth_date">1976-04-09</field>
+            <field name="sex">male</field>
+            <field name="phone">+44 7700 555 0106</field>
+            <field name="email">frank.hill@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.it"/>
+            <field name="study_country_id" ref="base.us"/>
+
+            <field name="is_intern">0</field>
+            <field name="license_number">LIC-0006</field>
+            <field name="license_issue_date">2003-05-12</field>
+            <field name="rating">4.55</field>
+        </record>
+
+
+        <!-- ===== Interns (2) with mentors ===== -->
+        <record id="doctor_07_intern" model="hr.hospital.doctor">
+            <field name="last_name">Lee</field>
+            <field name="first_name">Grace</field>
+            <field name="middle_name">Helen</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_intern_01"/>
+            <field name="speciality_id" ref="spec_card"/>
+
+            <field name="birth_date">2001-08-11</field>
+            <field name="sex">female</field>
+            <field name="phone">+1 555 0191</field>
+            <field name="email">grace.lee@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.us"/>
+            <field name="study_country_id" ref="base.us"/>
+
+            <field name="is_intern">1</field>
+            <field name="mentor_id" ref="doctor_02"/>
+            <field name="license_number">LIC-1001</field>
+            <field name="license_issue_date">2024-07-01</field>
+            <field name="rating">3.40</field>
+        </record>
+
+        <record id="doctor_08_intern" model="hr.hospital.doctor">
+            <field name="last_name">King</field>
+            <field name="first_name">Henry</field>
+            <field name="middle_name">Thomas</field>
+
+            <field name="active">1</field>
+            <field name="user_id" ref="user_intern_02"/>
+            <field name="speciality_id" ref="spec_neur"/>
+
+            <field name="birth_date">2000-02-23</field>
+            <field name="sex">male</field>
+            <field name="phone">+49 151 555 0192</field>
+            <field name="email">henry.king@example.com</field>
+
+            <field name="citizenship_country_id" ref="base.de"/>
+            <field name="study_country_id" ref="base.de"/>
+
+            <field name="is_intern">1</field>
+            <field name="mentor_id" ref="doctor_03"/>
+            <field name="license_number">LIC-1002</field>
+            <field name="license_issue_date">2024-09-15</field>
+            <field name="rating">3.10</field>
+        </record>
+
+    </data>
 </odoo>

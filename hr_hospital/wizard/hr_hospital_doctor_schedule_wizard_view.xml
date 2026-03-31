@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Doctor schedule wizard -->
+    <record id="view_doctor_schedule_wizard_form" model="ir.ui.view">
+      <field name="name">doctor.schedule.wizard.form</field>
+      <field name="model">doctor.schedule.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Generate Doctor Schedule">
+          <group>
+            <group>
+              <field name="doctor_id" options="{'no_create': True}"/>
+              <field name="week_start"/>
+              <field name="weeks_count"/>
+              <field name="schedule_type"/>
+            </group>
+            <group string="Working hours">
+              <field name="start_time"/>
+              <field name="end_time"/>
+              <field name="break_from"/>
+              <field name="break_to"/>
+            </group>
+          </group>
+
+          <group string="Days of week">
+            <group>
+              <field name="mon"/>
+              <field name="tue"/>
+              <field name="wed"/>
+              <field name="thu"/>
+            </group>
+            <group>
+              <field name="fri"/>
+              <field name="sat"/>
+              <field name="sun"/>
+            </group>
+          </group>
+
+          <footer>
+            <button name="action_generate" type="object" string="Generate" class="btn-primary"/>
+            <button string="Cancel" special="cancel" class="btn-secondary"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_doctor_schedule_wizard" model="ir.actions.act_window">
+      <field name="name">Generate Doctor Schedule</field>
+      <field name="res_model">doctor.schedule.wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+  </data>
+</odoo>

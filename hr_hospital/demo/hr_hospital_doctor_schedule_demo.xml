@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Week: 2026-02-16 .. 2026-02-20 (Mon..Fri) -->
+        <!-- Work hours: 09:00 - 17:00 -->
+
+        <!-- doctor_01 -->
+        <record id="sched_d01_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d01_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d01_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d01_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d01_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_01"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+        <!-- doctor_02 -->
+        <record id="sched_d02_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d02_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d02_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d02_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d02_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_02"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+        <!-- doctor_03 -->
+        <record id="sched_d03_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d03_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d03_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d03_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d03_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_03"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+        <!-- doctor_04 -->
+        <record id="sched_d04_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d04_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d04_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d04_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d04_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_04"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+        <!-- doctor_05 -->
+        <record id="sched_d05_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d05_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d05_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d05_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d05_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_05"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+        <!-- doctor_06 -->
+        <record id="sched_d06_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d06_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d06_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d06_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d06_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_06"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+        <!-- doctor_07_intern -->
+        <record id="sched_d07_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d07_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d07_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d07_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d07_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_07_intern"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+        <!-- doctor_08_intern -->
+        <record id="sched_d08_20260216" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="date">2026-02-16</field>
+            <field name="day_of_week">0</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d08_20260217" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="date">2026-02-17</field>
+            <field name="day_of_week">1</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d08_20260218" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="date">2026-02-18</field>
+            <field name="day_of_week">2</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d08_20260219" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="date">2026-02-19</field>
+            <field name="day_of_week">3</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+        <record id="sched_d08_20260220" model="hr.hospital.doctor.schedule">
+            <field name="doctor_id" ref="doctor_08_intern"/>
+            <field name="date">2026-02-20</field>
+            <field name="day_of_week">4</field>
+            <field name="start_time">9.0</field>
+            <field name="end_time">17.0</field>
+            <field name="type">work_day</field>
+        </record>
+
+    </data>
+</odoo>

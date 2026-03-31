@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- LIST -->
+    <record id="view_hr_hospital_contact_person_list" model="ir.ui.view">
+        <field name="name">hr.hospital.contact.person.list</field>
+        <field name="model">hr.hospital.contact.person</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="full_name"/>
+                <field name="relation"/>
+                <field name="patient_id"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="view_hr_hospital_contact_person_form" model="ir.ui.view">
+        <field name="name">hr.hospital.contact.person.form</field>
+        <field name="model">hr.hospital.contact.person</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="image_1920" widget="image" class="oe_avatar"/>
+                            <field name="last_name" placeholder="Last Name"/>
+                            <field name="first_name" placeholder="First Name"/>
+                            <field name="middle_name" placeholder="Middle Name"/>
+                        </h1>
+                    </div>
+
+                    <group col="2">
+                        <group string="Main Information">
+                            <field name="relation"/>
+                            <field name="patient_id"/>
+                            <field name="birth_date"/>
+                            <field name="age" readonly="1"/>
+                            <field name="sex"/>
+                        </group>
+
+                        <group string="Contacts">
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="citizenship_country_id"/>
+                            <field name="lang_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_hr_hospital_contact_person" model="ir.actions.act_window">
+        <field name="name">Contact Persons</field>
+        <field name="res_model">hr.hospital.contact.person</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
